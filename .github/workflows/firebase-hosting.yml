@@ -1,28 +1,30 @@
-name: CI/CD for Firebase Hosting
+name: Deploy to Firebase Hosting
 
 on:
   push:
     branches:
-      - main  # Despliega automáticamente cuando haya cambios en la rama `main`.
+      - main  # Cambia esto si tu rama principal tiene otro nombre
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v2
 
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '16'
+        node-version: '18'  # Asegúrate de usar una versión >=18
+
+    - name: Install dependencies
+      run: npm install
 
     - name: Install Firebase CLI
       run: npm install -g firebase-tools
 
     - name: Deploy to Firebase Hosting
+      run: firebase deploy --only hosting
       env:
-        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-      run: |
-        firebase deploy --only hosting
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}  # Asegúrate de tener tu token en los secretos de GitHub
