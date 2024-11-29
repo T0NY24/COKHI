@@ -1,26 +1,20 @@
+# views/login_view.py
 import flet as ft
-from controllers.auth_controller import login_user
 
-def login_view(page):
-    email = ft.TextField(label="Correo electrónico")
-    password = ft.TextField(label="Contraseña", password=True)
-    error_msg = ft.Text(color=ft.colors.RED)
-
-    def on_login(e):
-        result = login_user(email.value, password.value)
-        if result == "success":
-            page.go("/home")
-        else:
-            error_msg.value = result
-            page.update()
-
-    return ft.View(
-        "/",
-        controls=[
-            ft.Text("Login", size=30),
-            email,
-            password,
-            ft.ElevatedButton("Iniciar sesión", on_click=on_login),
-            error_msg,
-        ],
+def login_view(page: ft.Page, email_field, password_field, message_label, login_button):
+    """Crea la vista del formulario de login."""
+    page.title = "Login HubUIDE"
+    page.vertical_alignment = ft.MainAxisAlignment.CENTER
+    
+    page.add(
+        ft.Column(
+            [
+                ft.Text("Bienvenido a HubUIDE", size=30, weight=ft.FontWeight.BOLD),
+                email_field,
+                password_field,
+                login_button,
+                message_label,
+            ],
+            alignment=ft.MainAxisAlignment.CENTER,
+        )
     )

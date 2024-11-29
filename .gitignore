@@ -71,3 +71,5 @@ node_modules/
 # .gitignore
 .env
 
+# .claves
+hubuide-firebase-adminsdk-4p82r-a64a881b58.json

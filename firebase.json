@@ -5,8 +5,7 @@
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
-    ]
+    ],
+    "site": "hubuide-50077"
   }
-  
-  }
-
+}

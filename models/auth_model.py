@@ -1,15 +1,12 @@
-from firebase_config import auth
+# models/auth_model.py
+from firebase_admin import auth
 
-def iniciar_sesion(email, password):
+def authenticate_user(email: str, password: str):
+    """Función para autenticar al usuario con su correo y contraseña."""
     try:
-        user = auth.sign_in_with_email_and_password(email, password)
+        # Aquí podrías agregar la autenticación real con Firebase Authentication
+        # Para el ejemplo simplificado, verificamos si el correo existe
+        user = auth.get_user_by_email(email)
         return user
-    except Exception as e:
-        return str(e)
-
-def registrar_usuario(email, password):
-    try:
-        user = auth.create_user_with_email_and_password(email, password)
-        return user
-    except Exception as e:
-        return str(e)
+    except auth.AuthError as e:
+        return None

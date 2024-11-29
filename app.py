@@ -1,24 +1,21 @@
+# main.py
 import flet as ft
 from views.login_view import login_view
-from views.home_view import home_view
-from views.settings_view import settings_view
+from controllers.auth_controller import login_controller
+
+# Inicializar Firebase con la configuración
+import firebase_config  # Esto carga las configuraciones de Firebase
 
 def main(page: ft.Page):
-    page.title = "HubUide"
-    page.vertical_alignment = ft.MainAxisAlignment.CENTER
+    # Definir los campos y el botón
+    email_field = ft.TextField(label="Correo electrónico", autofocus=True)
+    password_field = ft.PasswordField(label="Contraseña")
+    message_label = ft.Text("", color="red")
 
-    # Navegación entre vistas
-    def route_change(route):
-        page.views.clear()
-        if page.route == "/":
-            page.views.append(login_view(page))
-        elif page.route == "/home":
-            page.views.append(home_view(page))
-        elif page.route == "/settings":
-            page.views.append(settings_view(page))
-        page.update()
+    login_button = ft.ElevatedButton("Iniciar sesión", on_click=lambda e: login_controller(page, email_field.value, password_field.value, message_label))
 
-    page.on_route_change = route_change
-    page.go("/")  # Comienza en la pantalla de login
+    # Llamamos a la vista de login
+    login_view(page, email_field, password_field, message_label, login_button)
 
+# Ejecutar la app
 ft.app(target=main)
