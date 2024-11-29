@@ -4,16 +4,18 @@
   "description": "HubUIDE, una aplicación de encuentros para la comunidad UIDE que permite a los usuarios conocerse.",
   "main": "index.js",
   "scripts": {
-    "start": "firebase serve",   
-    "deploy": "firebase deploy"   
+    "start": "firebase serve",
+    "deploy": "firebase deploy"
   },
   "dependencies": {
-    "firebase-tools": "^13.27.0"  
+    "dotenv": "^16.4.5",
+    "firebase": "^11.0.2",
+    "firebase-tools": "^13.27.0"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "engines": {
-    "node": ">=18.0.0"  
+    "node": ">=18.0.0"
   }
 }
