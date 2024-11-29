@@ -18,14 +18,11 @@ jobs:
       with:
         node-version: '18'  # Asegúrate de usar una versión >=18
 
-    - name: Navigate to project directory
-      run: cd HubUIDE  # Navega al subdirectorio donde está el package.json
-
     - name: Install dependencies
-      run: npm install
+      run: npm install  # Instala las dependencias desde package.json
 
     - name: Install Firebase CLI
-      run: npm install -g firebase-tools
+      run: npm install -g firebase-tools  # Instala Firebase CLI
 
     - name: Deploy to Firebase Hosting
       run: firebase deploy --only hosting
