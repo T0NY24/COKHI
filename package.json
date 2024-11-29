@@ -1,0 +1,12 @@
+{
+  "name": "hubuide",
+  "version": "1.0.0",
+  "description": "HubUIDE una aplicación de encuentros para la comunidad UIDE que permite a los usuarios conocerse.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

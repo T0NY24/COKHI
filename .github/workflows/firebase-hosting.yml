@@ -18,6 +18,9 @@ jobs:
       with:
         node-version: '18'  # Asegúrate de usar una versión >=18
 
+    - name: Navigate to project directory
+      run: cd HubUIDE  # Navega al subdirectorio donde está el package.json
+
     - name: Install dependencies
       run: npm install
 
@@ -27,4 +30,4 @@ jobs:
     - name: Deploy to Firebase Hosting
       run: firebase deploy --only hosting
       env:
-        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}  # Asegúrate de tener tu token en los secretos de GitHub
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
