@@ -1,7 +1,8 @@
-# firebase_config.py
 import firebase_admin
 from firebase_admin import credentials
 
-# Inicializa Firebase usando el archivo de claves
-cred = credentials.Certificate("path/to/your/firebase-adminsdk-key.json")
+# Ruta al archivo de claves descargado
+cred = credentials.Certificate('hubuide-firebase-adminsdk-4p82r-a64a881b58.json')  
+
+# Inicializa la app de Firebase
 firebase_admin.initialize_app(cred)

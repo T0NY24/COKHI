@@ -1,7 +1,19 @@
-from firebase_config.config import db
+class UserModel:
+    def __init__(self, id, name, photo_url, bio, interests):
+        self.id = id
+        self.name = name
+        self.photo_url = photo_url
+        self.bio = bio
+        self.interests = interests
 
-def get_user_data(uid):
-    doc = db.collection("users").document(uid).get()
-    if doc.exists:
-        return doc.to_dict()
-    return None
+    # Método para simular obtener un usuario aleatorio
+    @staticmethod
+    def get_random_user():
+        # Aquí iría la lógica para obtener un usuario de la base de datos.
+        return UserModel(
+            id=1,
+            name="Juan Pérez",
+            photo_url="https://example.com/photo.jpg",
+            bio="Amante del fútbol y la tecnología",
+            interests=["Deportes", "Tecnología", "Música"]
+        )
