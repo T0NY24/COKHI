@@ -1,11 +1,24 @@
 # controllers/auth_controller.py
-from models.auth_model import authenticate_user
+from models.firebase_model import FirebaseModel
 
-def login_controller(page, email, password, message_label):
-    """Controlador que maneja la interacción para hacer login."""
-    user = authenticate_user(email, password)
-    if user:
-        message_label.value = f"Bienvenido {user.email}!"
-    else:
-        message_label.value = "Error: Usuario no encontrado o contraseña incorrecta."
-    page.update()
+class AuthController:
+    def __init__(self):
+        self.firebase_model = FirebaseModel()
+
+    def login_user(self, email, password):
+        user = self.firebase_model.login(email, password)
+        if user:
+            print(f"Welcome back, {email}")
+            return True
+        else:
+            print("Login failed. Please check your credentials.")
+            return False
+
+    def signup_user(self, email, password):
+        user = self.firebase_model.signup(email, password)
+        if user:
+            print(f"Account created successfully for {email}")
+            return True
+        else:
+            print("Signup failed.")
+            return False

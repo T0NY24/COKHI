@@ -1,31 +1,7 @@
 import flet as ft
-from controllers.login_controller import LoginController
-
+from controllers import auth_controller
 def login_view(page):
-    def handle_login(e):
-        email = email_field.value
-        password = password_field.value
-        if not email or not password:
-            page.snack_bar = ft.SnackBar(ft.Text("Por favor, llena todos los campos."), bgcolor=ft.colors.RED)
-            page.snack_bar.open = True
-            page.update()
-            return
-
-        # Llamar al controlador para autenticar
-        result = LoginController().login_user(email, password)
-        page.snack_bar = ft.SnackBar(ft.Text(result["message"]), bgcolor=ft.colors.GREEN if result["status"] == "success" else ft.colors.RED)
-        page.snack_bar.open = True
-        page.update()
-
-    # Crear logo
-    logo = ft.Image(
-        src="static/logo.png",
-        width=150,
-        height=150,
-        fit=ft.ImageFit.CONTAIN
-    )
-
-    # Crear campos de texto
+    # Crear campos de texto y botón como variables locales dentro de `login_view`
     email_field = ft.TextField(
         label="Correo Electrónico",
         hint_text="Ingresa tu correo",
@@ -36,6 +12,37 @@ def login_view(page):
         hint_text="Ingresa tu contraseña",
         password=True,
         width=300
+    )
+
+    def handle_login(e):
+        # Usar las variables locales `email_field` y `password_field` para acceder a los valores
+        email = email_field.value
+        password = password_field.value
+
+        if not email or not password:
+            page.snack_bar = ft.SnackBar(
+                ft.Text("Por favor, llena todos los campos."),
+                bgcolor=ft.colors.RED
+            )
+            page.snack_bar.open = True
+            page.update()
+            return
+
+        # Llamar al controlador para autenticar
+        result = AuthController().login_user(email, password)
+        page.snack_bar = ft.SnackBar(
+            ft.Text(result["message"]),
+            bgcolor=ft.colors.GREEN if result["status"] == "success" else ft.colors.RED
+        )
+        page.snack_bar.open = True
+        page.update()
+
+    # Crear logo
+    logo = ft.Image(
+        src="static/logo.png",
+        width=150,
+        height=150,
+        fit=ft.ImageFit.CONTAIN
     )
 
     # Botón de login
