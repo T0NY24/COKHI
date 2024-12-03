@@ -71,5 +71,3 @@ node_modules/
 # .gitignore
 .env
 
-# .claves
-serviceAccountKey.json
