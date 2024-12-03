@@ -72,5 +72,4 @@ node_modules/
 .env
 
 # .claves
-hubuide-firebase-adminsdk-4p82r-a0f193dbc7.json
 serviceAccountKey.json
