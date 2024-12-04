@@ -5,7 +5,7 @@ from views.auth_view import login_view
 def main(page: ft.Page):
     page.title = "HubUIDE - Login"
     page.window.width = 400
-    page.window.height = 600
+    page.window.height = 700
 
     # Llamar a la vista del login
     login_view(page)
