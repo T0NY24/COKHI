@@ -1,19 +1,6 @@
 # HubUIDE
 
 **HubUIDE** es un proyecto basado en el patrón arquitectónico **MVC** desarrollado en **Python** usando **Flet** para el frontend y **Firebase** para la autenticación y el backend.
-
-## Tabla de Contenidos
-- [Requisitos previos](#requisitos-previos)
-- [Instalación](#instalación)
-- [Estructura del proyecto](#estructura-del-proyecto)
-- [Dependencias](#dependencias)
-- [Firebase](#configuración-de-firebase)
-- [CI/CD con GitHub Actions](#cicd-con-github-actions)
-- [Comandos importantes](#comandos-importantes)
-- [Notas adicionales](#notas-adicionales)
-
----
-
 ## Requisitos previos
 1. **Python 3.10+**: Se recomienda usar una versión reciente de Python.
 2. **Node.js 18+**: Para utilizar Firebase CLI.
@@ -45,129 +32,34 @@ HubUIDE/
 ├── static/                 # Archivos estáticos (CSS, JS, imágenes)
 ├── templates/              # Plantillas HTML (si las usas)
 └── README.md               # Documentación
-```
-
----
-
-## Dependencias
-
-### Python
-Las dependencias de Python se encuentran en el archivo `requirements.txt`. Si necesitas generarlo nuevamente, usa:
-```bash
-pip freeze > requirements.txt
-```
-
-Contenido del archivo `requirements.txt`:
-```
-flet==0.5.0  # Framework para la UI
-pyrebase4    # Firebase para Python
-firebase-admin  # SDK de Firebase para administrar servicios
-```
-
-### Node.js
-Si utilizas Firebase Hosting, asegúrate de incluir un archivo `package.json` con las siguientes dependencias:
-```json
-{
-  "dependencies": {
-    "firebase-tools": "^12.4.7"  // CLI para desplegar en Firebase Hosting
-  }
-}
-```
-
----
-
-## Configuración de Firebase
-
-1. **Inicializa Firebase Hosting** en tu proyecto:
-   ```bash
-   firebase init hosting
-   ```
-
-2. **Archivo `firebase.json`**:
-   Asegúrate de que el archivo `firebase.json` apunte al directorio correcto con tus archivos estáticos:
-   ```json
-   {
-     "hosting": {
-       "public": "build",  // Cambia "build" si usas otro directorio
-       "ignore": [
-         "firebase.json",
-         "**/.*",
-         "**/node_modules/**"
-       ]
-     }
-   }
-   ```
-
-3. **Configura el token de Firebase**:
-   Obtén el token de Firebase ejecutando:
-   ```bash
-   firebase login:ci
-   ```
-   Guarda el token en **GitHub Secrets** con el nombre `FIREBASE_TOKEN`.
-
----
-
-## CI/CD con GitHub Actions
-
-Archivo `.github/workflows/deploy.yml` para CI/CD:
-
-```yaml
-name: Deploy to Firebase Hosting
-
-on:
-  push:
-    branches:
-      - main
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-
-    - name: Install dependencies
-      run: npm install
-
-    - name: Install Firebase CLI
-      run: npm install -g firebase-tools
-
-    - name: Deploy to Firebase Hosting
-      run: firebase deploy --only hosting
-      env:
-        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-```
-
----
-
-## Comandos importantes
-
-### Desplegar manualmente a Firebase Hosting
-```bash
-firebase deploy --only hosting
-```
-
-### Instalar dependencias
-```bash
-pip install -r requirements.txt
-npm install
-```
-
----
-
-## Notas adicionales
-- **Autenticación:** Usa `pyrebase4` para manejar la autenticación de usuarios.
-- **Errores comunes:**
-  - `firebase.json not found`: Asegúrate de que el archivo esté en el directorio raíz.
-  - `EMAIL_EXISTS`: Indica que el correo ya está registrado.
-- **DeprecationWarning de Node.js:** Actualiza tus dependencias para resolver advertencias.
-
---- 
-
-Con este `README.md`, tendrás una guía detallada para configurar y desplegar tu proyecto correctamente.
+annotated-types==0.7.0
+anyio==4.4.0
+arrow==1.3.0
+blinker==1.8.2
+CacheControl==0.14.1
+cachetools==5.5.0
+certifi==2024.6.2
+cffi==1.17.1
+chardet==5.2.0
+charset-normalizer==3.3.2
+click==8.1.7
+colorama==0.4.6
+cookiecutter==2.6.0
+cryptography==44.0.0
+dnspython==2.6.1
+email_validator==2.1.1
+fastapi==0.111.0
+firebase-admin==6.6.0
+Flask==3.0.3
+Flask-MySQLdb==2.0.0
+Flask-SQLAlchemy==3.1.1
+flet==0.25.0
+flet-core==0.22.1
+flet-desktop==0.25.0
+google-api-python-client==2.154.0
+google-cloud-firestore==2.19.0
+mysqlclient==2.2.4
+pyrebase4==4.8.0
+SQLAlchemy==2.0.30
+uvicorn==0.30.1
+Werkzeug==3.0.3
