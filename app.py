@@ -7,7 +7,7 @@ def main(page: ft.Page):
     page.window.width = 400
     page.window.height = 600
 
-    # Llamar a la vista del login
+    
     login_view(page)
 
 ft.app(target=main)
