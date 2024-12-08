@@ -82,3 +82,31 @@ class FirebaseModel:
         except Exception as e:
             print(f"Error deleting user: {e}")
             return False
+
+    # Función para guardar los datos del cuidador en Firestore
+    def save_caregiver_data(self, caregiver_id, nombre, apellido, cedula, email, telefono, fecha_registro):
+        try:
+            caregiver_data = {
+                "Nombre": nombre,
+                "Apellido": apellido,
+                "Cedula": cedula,
+                "Email": email,
+                "Telefono": telefono,
+                "FechaRegistro": fecha_registro
+            }
+            # Guardar los datos del cuidador en Firestore bajo el ID del cuidador
+            self.db.child("Cuidadores").child(caregiver_id).set(caregiver_data)
+            print(f"Caregiver {nombre} {apellido} saved in Firestore.")
+            return True
+        except Exception as e:
+            print(f"Error saving caregiver data: {e}")
+            return False
+
+    # Función para obtener los datos de un cuidador
+    def get_caregiver_data(self, caregiver_id):
+        try:
+            caregiver_data = self.db.child("Cuidadores").child(caregiver_id).get()
+            return caregiver_data.val()  # Devuelve los datos del cuidador
+        except Exception as e:
+            print(f"Error retrieving caregiver data: {e}")
+            return None

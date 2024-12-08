@@ -51,3 +51,48 @@ class AuthController:
         else:
             print("Signup failed.")
             return False
+
+    # Función para el registro de cuidadores
+    def signup_caregiver(self, cuidador_data, password):
+        # Extraer datos del diccionario
+        email = cuidador_data.get('email')
+        nombre = cuidador_data.get('nombre')
+        apellido = cuidador_data.get('apellido')
+        cedula = cuidador_data.get('cedula')
+        telefono = cuidador_data.get('telefono')
+        fecha_registro = cuidador_data.get('fechaRegistro', datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+
+        # Primero, registramos al cuidador en Firebase Authentication
+        user = self.firebase_model.signup(email, password)
+        if user:
+            print(f"Account created successfully for caregiver {email}")
+
+            # Ahora guardamos los datos adicionales en Firestore
+            caregiver_id = user['localId']  # Obtén el ID del cuidador creado
+
+            # Guardamos los datos del cuidador en Firestore
+            self.firebase_model.save_caregiver_data(
+                caregiver_id,
+                nombre=nombre,
+                apellido=apellido,
+                cedula=cedula,
+                email=email,
+                telefono=telefono,
+                fecha_registro=fecha_registro
+            )
+
+            print(f"Caregiver {nombre} {apellido} registered in Firestore successfully.")
+            return True
+        else:
+            print("Signup for caregiver failed.")
+            return False
+
+    # Función para obtener datos del cuidador
+    def get_caregiver(self, caregiver_id):
+        caregiver_data = self.firebase_model.get_caregiver_data(caregiver_id)
+        if caregiver_data:
+            print(f"Caregiver data retrieved: {caregiver_data}")
+            return caregiver_data
+        else:
+            print("Failed to retrieve caregiver data.")
+            return None
