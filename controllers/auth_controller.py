@@ -52,7 +52,7 @@ class AuthController:
             print("Signup failed.")
             return False
 
-    # Función para el registro de cuidadores
+    # Función para el signup de cuidadores
     def signup_caregiver(self, cuidador_data, password):
         # Extraer datos del diccionario
         email = cuidador_data.get('email')
@@ -62,23 +62,23 @@ class AuthController:
         telefono = cuidador_data.get('telefono')
         fecha_registro = cuidador_data.get('fechaRegistro', datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
-        # Primero, registramos al cuidador en Firebase Authentication
+        # Primero, registramos al cuidador en Firebase Authentication (sin guardar la contraseña en Firestore)
         user = self.firebase_model.signup(email, password)
         if user:
             print(f"Account created successfully for caregiver {email}")
 
-            # Ahora guardamos los datos adicionales en Firestore
+            # Ahora guardamos los datos adicionales del cuidador en Firestore (sin la contraseña)
             caregiver_id = user['localId']  # Obtén el ID del cuidador creado
 
-            # Guardamos los datos del cuidador en Firestore
+            # Guardamos los datos del cuidador en Firestore, ahora incluyendo 'email'
             self.firebase_model.save_caregiver_data(
                 caregiver_id,
                 nombre=nombre,
                 apellido=apellido,
                 cedula=cedula,
-                email=email,
                 telefono=telefono,
-                fecha_registro=fecha_registro
+                fecha_registro=fecha_registro,
+                email=email  # Agregar el parámetro 'email'
             )
 
             print(f"Caregiver {nombre} {apellido} registered in Firestore successfully.")
@@ -86,13 +86,3 @@ class AuthController:
         else:
             print("Signup for caregiver failed.")
             return False
-
-    # Función para obtener datos del cuidador
-    def get_caregiver(self, caregiver_id):
-        caregiver_data = self.firebase_model.get_caregiver_data(caregiver_id)
-        if caregiver_data:
-            print(f"Caregiver data retrieved: {caregiver_data}")
-            return caregiver_data
-        else:
-            print("Failed to retrieve caregiver data.")
-            return None

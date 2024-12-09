@@ -251,23 +251,40 @@ ACCENT_COLOR = "#F7AC5E"
 BACKGROUND_COLOR = "#FCFAFA"
 
 def cuidador_signup_view(page):
-    # Manejo del registro de cuidadores
-    def handle_cuidador_signup(nombre, apellido, cedula, email, telefono, experiencia, descripcion):
+    page.title = "Cokhi - Registro Cuidador"
+    page.vertical_alignment = ft.MainAxisAlignment.CENTER
+
+    def handle_cuidador_signup():
         controller = AuthController()
+
+        # Datos del cuidador
         cuidador_data = {
-            "nombre": nombre,
-            "apellido": apellido,
-            "cedula": cedula,
-            "email": email,
-            "telefono": telefono,
-            "experiencia": experiencia,
-            "descripcion": descripcion,
-            "fechaRegistro": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            'nombre': nombre_input.value,
+            'apellido': apellido_input.value,
+            'cedula': cedula_input.value,
+            'email': email_input.value,
+            'telefono': telefono_input.value,
+            'fechaRegistro': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
         }
 
-        # Registrar cuidador usando el AuthController
-        if controller.signup_caregiver(cuidador_data, "password_cuidador"):
+        # Validación de los campos
+        if not all([
+            email_input.value, 
+            password_input.value, 
+            nombre_input.value, 
+            apellido_input.value, 
+            cedula_input.value,
+            telefono_input.value
+        ]):
+            page.snack_bar = ft.SnackBar(ft.Text("Por favor, complete todos los campos"), bgcolor="red")
+            page.snack_bar.open = True
+            page.update()
+            return
+
+        # Intentar registrar al cuidador
+        if controller.signup_caregiver(cuidador_data, password_input.value):
             page.snack_bar = ft.SnackBar(ft.Text("Cuenta de cuidador creada con éxito"), bgcolor=PRIMARY_COLOR)
+            show_login_view()  # Cambiar a vista de login
         else:
             page.snack_bar = ft.SnackBar(ft.Text("Error al crear la cuenta de cuidador"), bgcolor="red")
         page.snack_bar.open = True
@@ -278,14 +295,20 @@ def cuidador_signup_view(page):
         login_view(page)
         page.update()
 
-    # Botón para volver al login
-    login_button = ft.TextButton(
-        "¿Ya tienes una cuenta? Inicia Sesión.",
-        on_click=lambda _: show_login_view(),
-        style=ft.ButtonStyle(color=ACCENT_COLOR),
+    # UI del registro del cuidador
+    email_input = ft.TextField(
+        label="Correo Electrónico",
+        hint_text="tu@email.com",
+        prefix_icon=ft.icons.EMAIL,
+        border_color=PRIMARY_COLOR,
     )
-
-    # Campos de entrada para los datos del cuidador
+    password_input = ft.TextField(
+        label="Contraseña",
+        password=True,
+        hint_text="Crea una contraseña segura",
+        prefix_icon=ft.icons.LOCK,
+        border_color=PRIMARY_COLOR,
+    )
     nombre_input = ft.TextField(
         label="Nombre",
         hint_text="Ingresa tu nombre",
@@ -298,32 +321,15 @@ def cuidador_signup_view(page):
     )
     cedula_input = ft.TextField(
         label="Cédula",
-        hint_text="Ingresa tu número de cédula",
-        border_color=PRIMARY_COLOR,
-    )
-    email_input = ft.TextField(
-        label="Correo Electrónico",
-        hint_text="Ingresa tu correo electrónico",
+        hint_text="Ingresa tu cédula",
         border_color=PRIMARY_COLOR,
     )
     telefono_input = ft.TextField(
         label="Teléfono",
-        hint_text="Ingresa tu número de teléfono",
-        border_color=PRIMARY_COLOR,
-    )
-    experiencia_input = ft.TextField(
-        label="Años de Experiencia",
-        hint_text="Especifica cuántos años de experiencia tienes",
-        border_color=PRIMARY_COLOR,
-    )
-    descripcion_input = ft.TextField(
-        label="Descripción",
-        hint_text="Describe tu experiencia como cuidador",
-        multiline=True,
+        hint_text="Ingresa tu teléfono",
         border_color=PRIMARY_COLOR,
     )
 
-    # Botón para registrar cuidador
     signup_button = ft.ElevatedButton(
         "Registrarse como Cuidador",
         bgcolor=PRIMARY_COLOR,
@@ -331,44 +337,44 @@ def cuidador_signup_view(page):
         style=ft.ButtonStyle(
             overlay_color={"hovered": ACCENT_COLOR, "pressed": PRIMARY_COLOR}
         ),
-        on_click=lambda _: handle_cuidador_signup(
-            nombre_input.value, apellido_input.value,
-            cedula_input.value, email_input.value,
-            telefono_input.value, experiencia_input.value,
-            descripcion_input.value
-        ),
+        on_click=lambda _: handle_cuidador_signup(),
     )
 
-    # Contenedor principal de la vista
-    cuidador_container = ft.Container(
+    login_button = ft.TextButton(
+        "¿Ya tienes una cuenta? Inicia Sesión.",
+        on_click=lambda _: show_login_view(),
+        style=ft.ButtonStyle(color=ACCENT_COLOR),
+    )
+
+    # Contenedor principal del registro de cuidador
+    signup_container = ft.Container(
         content=ft.Column(
             [
-                ft.Text("Registro de Cuidador", size=32, weight="bold", color=PRIMARY_COLOR),
+                ft.Text("Cokhi", size=32, weight="bold", color=PRIMARY_COLOR),
+                ft.Text("Regístrate como Cuidador", size=16, color=SECONDARY_COLOR),
+                email_input,
+                password_input,
                 nombre_input,
                 apellido_input,
                 cedula_input,
-                email_input,
                 telefono_input,
-                experiencia_input,
-                descripcion_input,
                 signup_button,
-                login_button,  # Ahora el botón está definido antes de usarlo
+                login_button,
             ],
             alignment=ft.MainAxisAlignment.CENTER,
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
             spacing=20,
         ),
         padding=20,
-        width=400,
+        width=500,
         border_radius=10,
         bgcolor=BACKGROUND_COLOR,
         shadow=ft.BoxShadow(blur_radius=15, spread_radius=5, color="rgba(0,0,0,0.1)"),
     )
 
-    # Agregar el contenedor al layout principal de la página
     page.add(
         ft.Container(
-            content=ft.Row([cuidador_container], alignment=ft.MainAxisAlignment.CENTER),
+            content=ft.Row([signup_container], alignment=ft.MainAxisAlignment.CENTER),
             bgcolor=BACKGROUND_COLOR,
             expand=True,
         )
