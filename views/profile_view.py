@@ -74,4 +74,4 @@ def profile_view(page: ft.Page, user_id):
         ], alignment=ft.MainAxisAlignment.CENTER, spacing=10)
     )
 
-ft.app(target=lambda page: profile_view(page, "tcp4dtDtjYV8hCCACDNfunjmdYt1"))  # Reemplazar con user_id dinámico
+ft.app(target=lambda page: profile_view(page, "GUeE4UPyoqYcgt7zwkpRC3E5c4H3"))  # Reemplazar con user_id dinámico

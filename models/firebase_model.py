@@ -14,7 +14,7 @@ class FirebaseModel:
             "apiKey": "AIzaSyAr5AUqKB-qXEHXn8vgFX8hndpITFkncTY",
             "authDomain": "hubuide.firebaseapp.com",
             "projectId": "hubuide",
-            "storageBucket": "hubuide.firebaseapp.com",
+            "storageBucket": "hubuide.appspot.com",
             "messagingSenderId": "767282462248",
             "appId": "1:767282462248:web:d27c9856a65bfe6d38ff1d",
             "databaseURL": ""
@@ -62,19 +62,8 @@ class FirebaseModel:
             return None
 
     ### 📌 CRUD de Usuarios ###
-    def get_user_profile(self, user_id):
-        """Obtiene los datos del usuario desde Firebase Firestore."""
-        try:
-            user_doc = self.db.collection("Usuarios").document(user_id).get()
-            if user_doc.exists:
-                return user_doc.to_dict()
-            else:
-                print(f"Usuario {user_id} no encontrado.")
-                return None
-        except Exception as e:
-            print(f"Error retrieving user profile: {e}")
-            return None
-    def save_user_data(self, user_id, nombre, apellido, telefono, ciudad, codigo_postal, correo_electronico):
+
+    def save_user_data(self, user_id, nombre, apellido, telefono, ciudad, codigo_postal, correo_electronico, fecha_registro):
         """📥 Guardar un nuevo usuario en Firestore."""
         try:
             user_data = {
@@ -84,14 +73,14 @@ class FirebaseModel:
                 "Ciudad": ciudad,
                 "CodigoPostal": codigo_postal,
                 "CorreoElectronico": correo_electronico,
-                "FechaRegistro": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                "FotoPerfil": f"{UPLOAD_FOLDER}/{user_id}.jpg"  # Imagen local por defecto
+                "FechaRegistro": fecha_registro,
+                "FotoPerfil": f"{UPLOAD_FOLDER}/{user_id}.jpg"
             }
             self.db.collection("Usuarios").document(user_id).set(user_data)
-            print(f"User {nombre} {apellido} saved in Firestore.")
+            print(f"✅ Usuario {nombre} {apellido} guardado en Firestore.")
             return True
         except Exception as e:
-            print(f"Error saving user data: {e}")
+            print(f"❌ Error saving user data: {e}")
             return False
 
     def get_user_data(self, user_id):
@@ -100,32 +89,45 @@ class FirebaseModel:
             user_data = self.db.collection("Usuarios").document(user_id).get()
             return user_data.to_dict()
         except Exception as e:
-            print(f"Error retrieving user data: {e}")
+            print(f"❌ Error retrieving user data: {e}")
             return None
+        
+
+    def get_all_users(self):
+    
+        try:
+            users_ref = self.db.collection("Usuarios").stream()
+            users = [{"id": doc.id, **doc.to_dict()} for doc in users_ref]
+            print(f"✅ {len(users)} usuarios obtenidos de Firestore.")
+            return users
+        except Exception as e:
+            print(f"❌ Error retrieving users: {e}")
+            return []
+
 
     def update_user_data(self, user_id, updated_data):
         """🔄 Actualizar información del usuario."""
         try:
             self.db.collection("Usuarios").document(user_id).update(updated_data)
-            print(f"User {user_id} data updated.")
+            print(f"✅ User {user_id} data updated.")
             return True
         except Exception as e:
-            print(f"Error updating user data: {e}")
+            print(f"❌ Error updating user data: {e}")
             return False
 
     def delete_user(self, user_id):
         """🗑️ Eliminar un usuario de Firestore."""
         try:
             self.db.collection("Usuarios").document(user_id).delete()
-            print(f"User {user_id} deleted.")
+            print(f"✅ User {user_id} deleted.")
             return True
         except Exception as e:
-            print(f"Error deleting user: {e}")
+            print(f"❌ Error deleting user: {e}")
             return False
 
     ### 📌 CRUD de Cuidadores ###
 
-    def save_caregiver_data(self, caregiver_id, nombre, apellido, cedula, email, telefono, ciudad):
+    def save_caregiver_data(self, caregiver_id, nombre, apellido, cedula, email, telefono, fecha_registro):
         """📥 Guardar información de un cuidador."""
         try:
             caregiver_data = {
@@ -134,15 +136,28 @@ class FirebaseModel:
                 "Cedula": cedula,
                 "Email": email,
                 "Telefono": telefono,
-                "Ciudad": ciudad,
-                "FechaRegistro": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                "FechaRegistro": fecha_registro
             }
             self.db.collection("Cuidadores").document(caregiver_id).set(caregiver_data)
-            print(f"Caregiver {nombre} {apellido} saved in Firestore.")
+            print(f"✅ Cuidador {nombre} {apellido} guardado en Firestore.")
             return True
         except Exception as e:
-            print(f"Error saving caregiver data: {e}")
+            print(f"❌ Error saving caregiver data: {e}")
             return False
+        
+        
+    def get_all_caregivers(self):
+    
+        try:
+            caregivers_ref = self.db.collection("Cuidadores").stream()
+            caregivers = [{"id": doc.id, **doc.to_dict()} for doc in caregivers_ref]  # Agrega el ID manualmente
+            print(f"✅ {len(caregivers)} cuidadores obtenidos de Firestore.")
+            return caregivers
+        except Exception as e:
+            print(f"❌ Error retrieving caregivers: {e}")
+            return []
+
+
 
     def get_caregiver_data(self, caregiver_id):
         """📤 Obtener datos de un cuidador."""
@@ -150,21 +165,19 @@ class FirebaseModel:
             caregiver_data = self.db.collection("Cuidadores").document(caregiver_id).get()
             return caregiver_data.to_dict()
         except Exception as e:
-            print(f"Error retrieving caregiver data: {e}")
+            print(f"❌ Error retrieving caregiver data: {e}")
             return None
 
-    ### 📌 Manejo de Imágenes de Perfil (Local) ###
-
-    def save_profile_picture(self, user_id, file_path):
-        """📤 Guardar una imagen de perfil localmente y actualizar Firestore."""
+    def get_all_caregivers(self):
+        """📤 Obtener todos los cuidadores registrados en Firestore."""
         try:
-            new_filename = f"{UPLOAD_FOLDER}/{user_id}.jpg"
-            shutil.copy(file_path, new_filename)  # Copia la imagen a la carpeta `uploads/`
-            self.db.collection("Usuarios").document(user_id).update({"FotoPerfil": new_filename})
-            return new_filename  # Retorna la ruta local de la imagen
+            caregivers_ref = self.db.collection("Cuidadores").stream()
+            caregivers = [doc.to_dict() for doc in caregivers_ref]
+            print(f"✅ {len(caregivers)} cuidadores obtenidos de Firestore.")
+            return caregivers
         except Exception as e:
-            print(f"Error saving profile picture: {e}")
-            return None
+            print(f"❌ Error retrieving caregivers: {e}")
+            return []
 
     ### 📌 CRUD de Reservas ###
 
@@ -183,7 +196,7 @@ class FirebaseModel:
             doc_ref = self.db.collection("Reservas").add(reserva_data)
             return doc_ref[1].id
         except Exception as e:
-            print(f"Error creating reservation: {e}")
+            print(f"❌ Error creating reservation: {e}")
             return None
 
     def update_reservation_status(self, reserva_id, nuevo_estado):
@@ -192,7 +205,7 @@ class FirebaseModel:
             self.db.collection("Reservas").document(reserva_id).update({"estado": nuevo_estado})
             return True
         except Exception as e:
-            print(f"Error updating reservation status: {e}")
+            print(f"❌ Error updating reservation status: {e}")
             return False
 
     def delete_reservation(self, reserva_id):
@@ -201,5 +214,5 @@ class FirebaseModel:
             self.db.collection("Reservas").document(reserva_id).delete()
             return True
         except Exception as e:
-            print(f"Error deleting reservation: {e}")
+            print(f"❌ Error deleting reservation: {e}")
             return False

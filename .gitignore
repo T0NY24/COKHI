@@ -71,3 +71,4 @@ node_modules/
 # .gitignore
 .env
 hubuide-firebase-adminsdk-4p82r-c015f8b288.json
+verificar.py
