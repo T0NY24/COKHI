@@ -23,7 +23,7 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: Debug: List Files
+      - name: Debug List Files  # Removed the colon from the name
         run: ls -R  # ✅ Muestra la estructura del repo para verificar rutas
 
       - name: Build the Flet App
