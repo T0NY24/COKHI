@@ -24,11 +24,15 @@ jobs:
           pip install -r requirements.txt
           pip install coverage
 
-     
+
+
+      - name: Debug: List Files
+        run: ls -R  # ✅ Muestra los archivos en GitHub Actions para verificar rutas
+
       - name: Build the Flet App
         run: |
           mkdir -p build
-          python main.py  # Asegúrate de que genera los archivos en 'build/'
+          python HubUIDE/app.py  # ✅ Ahora usa `app.py`
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
