@@ -24,16 +24,16 @@ jobs:
           pip install -r requirements.txt
           pip install coverage
 
-      
-
+     
       - name: Build the Flet App
         run: |
           mkdir -p build
           python main.py  # Asegúrate de que genera los archivos en 'build/'
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
+          name: github-pages
           path: "build"
 
   deploy:
@@ -47,4 +47,4 @@ jobs:
 
     steps:
       - name: Deploy GitHub Pages
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4
