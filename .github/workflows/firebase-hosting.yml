@@ -1,9 +1,9 @@
-name: Deploy to Firebase Hosting
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches:
-      - main  # Cambia esto si tu rama principal tiene otro nombre
+      - main  # Se ejecuta cuando hay cambios en main
 
 jobs:
   build:
@@ -24,18 +24,27 @@ jobs:
           pip install -r requirements.txt
           pip install coverage
 
+      
+
+      - name: Build the Flet App
+        run: |
+          mkdir -p build
+          python main.py  # Asegúrate de que genera los archivos en 'build/'
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: "build"
 
   deploy:
-    name: Deploy to Firebase Hosting
+    name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
     needs: build  # No se ejecuta si fallan las pruebas
 
+    permissions:
+      pages: write
+      id-token: write
+
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Install Firebase CLI
-        run: npm install -g firebase-tools
-
-      - name: Deploy to Firebase Hosting
-        run: firebase deploy --only hosting --token "${{ secrets.FIREBASE_TOKEN }}"
+      - name: Deploy GitHub Pages
+        uses: actions/deploy-pages@v2
