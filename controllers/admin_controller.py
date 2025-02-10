@@ -1,10 +1,9 @@
 from models.firebase_model import FirebaseModel
 
+
 class AdminController:
     def __init__(self):
         self.firebase = FirebaseModel()
-
-    
 
     def get_all_users(self):
         """Obtiene la lista de usuarios registrados."""

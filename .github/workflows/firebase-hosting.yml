@@ -6,25 +6,40 @@ on:
       - main  # Cambia esto si tu rama principal tiene otro nombre
 
 jobs:
-  deploy:
+  build:
+    name: Build & Test Cokhi
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'  # Asegúrate de usar una versión >=18
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
 
-    - name: Install dependencies
-      run: npm install  # Instala las dependencias desde package.json
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install coverage
 
-    - name: Install Firebase CLI
-      run: npm install -g firebase-tools  # Instala Firebase CLI
+      - name: Run Tests with Coverage
+        run: |
+          coverage run -m unittest discover tests
+          coverage report -m
 
-    - name: Deploy to Firebase Hosting
-      run: firebase deploy --only hosting
-      env:
-        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+  deploy:
+    name: Deploy to Firebase Hosting
+    runs-on: ubuntu-latest
+    needs: build  # No se ejecuta si fallan las pruebas
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+
+      - name: Deploy to Firebase Hosting
+        run: firebase deploy --only hosting --token "${{ secrets.FIREBASE_TOKEN }}"

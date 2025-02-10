@@ -2,6 +2,7 @@ import flet as ft
 from controllers.caregiver_controller import CaregiverController
 from controllers.reservas_controller import ReservasController
 
+
 def main_page(page: ft.Page):
     page.title = "Encuentra tu Cuidador"
     caregiver_controller = CaregiverController()
@@ -18,14 +19,25 @@ def main_page(page: ft.Page):
     def update_caregiver():
         if current_index >= len(caregivers):
             return
-        
+
         caregiver = caregivers[current_index]
-        caregiver_image.src = caregiver.get("image", "https://th.bing.com/th/id/OIP.u0a0SBvdAMONiNqQBmTVWAHaLF?rs=1&pid=ImgDetMain")  # Si no hay imagen, mostrar placeholder
-        caregiver_name.value = f"{caregiver.get('Nombre', 'Desconocido')} {caregiver.get('Apellido', '')}"
-        caregiver_cedula.value = f"📄 Cédula: {caregiver.get('Cedula', 'No disponible')}"
+        caregiver_image.src = caregiver.get(
+            "image",
+            "https://th.bing.com/th/id/OIP.u0a0SBvdAMONiNqQBmTVWAHaLF?rs=1&pid=ImgDetMain",
+        )  # Si no hay imagen, mostrar placeholder
+        caregiver_name.value = (
+            f"{caregiver.get('Nombre', 'Desconocido')} {caregiver.get('Apellido', '')}"
+        )
+        caregiver_cedula.value = (
+            f"📄 Cédula: {caregiver.get('Cedula', 'No disponible')}"
+        )
         caregiver_email.value = f"📧 Email: {caregiver.get('Email', 'No disponible')}"
-        caregiver_phone.value = f"📞 Teléfono: {caregiver.get('Telefono', 'No disponible')}"
-        caregiver_registration.value = f"📅 Registrado el: {caregiver.get('FechaRegistro', 'Fecha desconocida')}"
+        caregiver_phone.value = (
+            f"📞 Teléfono: {caregiver.get('Telefono', 'No disponible')}"
+        )
+        caregiver_registration.value = (
+            f"📅 Registrado el: {caregiver.get('FechaRegistro', 'Fecha desconocida')}"
+        )
         page.update()
 
     # 📌 Función para rechazar un cuidador
@@ -46,9 +58,13 @@ def main_page(page: ft.Page):
             cuidador_id=caregiver["id"],
             fecha_inicio="2025-02-01",
             fecha_fin="2025-02-07",
-            mascota={"nombre": "Firulais", "tipo": "Perro"}
+            mascota={"nombre": "Firulais", "tipo": "Perro"},
         )
-        result_text.value = "Reserva creada correctamente" if reservation_id else "Error al crear reserva"
+        result_text.value = (
+            "Reserva creada correctamente"
+            if reservation_id
+            else "Error al crear reserva"
+        )
         page.update()
 
     # 📌 Función para cerrar el modal
@@ -60,21 +76,46 @@ def main_page(page: ft.Page):
     def show_info(e):
         caregiver = caregivers[current_index]
         modal_content.controls.clear()
-        modal_content.controls.append(ft.Column([
-            ft.Image(src=caregiver.get("image", "https://via.placeholder.com/300"), width=250, height=250),
-            ft.Text(f"{caregiver.get('Nombre', 'Desconocido')} {caregiver.get('Apellido', '')}", size=22, weight="bold"),
-            ft.Text(f"📄 Cédula: {caregiver.get('Cedula', 'No disponible')}", size=18),
-            ft.Text(f"📧 Email: {caregiver.get('Email', 'No disponible')}", size=18),
-            ft.Text(f"📞 Teléfono: {caregiver.get('Telefono', 'No disponible')}", size=18),
-            ft.Text(f"📅 Registrado el: {caregiver.get('FechaRegistro', 'Fecha desconocida')}", size=18),
-            ft.ElevatedButton("Cerrar", on_click=close_modal),
-        ]))
+        modal_content.controls.append(
+            ft.Column(
+                [
+                    ft.Image(
+                        src=caregiver.get("image", "https://via.placeholder.com/300"),
+                        width=250,
+                        height=250,
+                    ),
+                    ft.Text(
+                        f"{caregiver.get('Nombre', 'Desconocido')} {caregiver.get('Apellido', '')}",
+                        size=22,
+                        weight="bold",
+                    ),
+                    ft.Text(
+                        f"📄 Cédula: {caregiver.get('Cedula', 'No disponible')}",
+                        size=18,
+                    ),
+                    ft.Text(
+                        f"📧 Email: {caregiver.get('Email', 'No disponible')}", size=18
+                    ),
+                    ft.Text(
+                        f"📞 Teléfono: {caregiver.get('Telefono', 'No disponible')}",
+                        size=18,
+                    ),
+                    ft.Text(
+                        f"📅 Registrado el: {caregiver.get('FechaRegistro', 'Fecha desconocida')}",
+                        size=18,
+                    ),
+                    ft.ElevatedButton("Cerrar", on_click=close_modal),
+                ]
+            )
+        )
         modal.open = True
         page.dialog = modal
         page.update()
 
     # 📌 Elementos de UI
-    caregiver_image = ft.Image(src="https://via.placeholder.com/300", width=300, height=300)
+    caregiver_image = ft.Image(
+        src="https://via.placeholder.com/300", width=300, height=300
+    )
     caregiver_name = ft.Text(value="", size=24, weight="bold")
     caregiver_cedula = ft.Text(value="", size=18)
     caregiver_email = ft.Text(value="", size=18)
@@ -96,19 +137,27 @@ def main_page(page: ft.Page):
 
     # 📌 Agregar elementos a la UI
     page.add(
-        ft.Column([
-            caregiver_image,
-            caregiver_name,
-            caregiver_cedula,
-            caregiver_email,
-            caregiver_phone,
-            caregiver_registration,
-            ft.Row([reject_button, info_button, accept_button], alignment=ft.MainAxisAlignment.CENTER),
-            result_text
-        ], alignment=ft.MainAxisAlignment.CENTER, spacing=20)
+        ft.Column(
+            [
+                caregiver_image,
+                caregiver_name,
+                caregiver_cedula,
+                caregiver_email,
+                caregiver_phone,
+                caregiver_registration,
+                ft.Row(
+                    [reject_button, info_button, accept_button],
+                    alignment=ft.MainAxisAlignment.CENTER,
+                ),
+                result_text,
+            ],
+            alignment=ft.MainAxisAlignment.CENTER,
+            spacing=20,
+        )
     )
 
     # 📌 Agregar el modal
     page.dialog = modal
+
 
 ft.app(target=main_page)

@@ -1,6 +1,7 @@
 import flet as ft
 from controllers.user_controller import UserController
 
+
 def user_view(page: ft.Page):
     page.title = "Gestión de Usuarios"
     controller = UserController()
@@ -8,10 +9,13 @@ def user_view(page: ft.Page):
     # 📌 Función para registrar un usuario
     def register_user(e):
         success = controller.create_user(
-            email_input.value, password_input.value, 
-            nombre_input.value, apellido_input.value, 
-            telefono_input.value, ciudad_input.value, 
-            codigo_postal_input.value
+            email_input.value,
+            password_input.value,
+            nombre_input.value,
+            apellido_input.value,
+            telefono_input.value,
+            ciudad_input.value,
+            codigo_postal_input.value,
         )
         if success:
             page.dialog = ft.AlertDialog(title=ft.Text("Usuario registrado con éxito"))
@@ -34,16 +38,24 @@ def user_view(page: ft.Page):
         updated_data = {
             "Telefono": telefono_input.value,
             "Ciudad": ciudad_input.value,
-            "CodigoPostal": codigo_postal_input.value
+            "CodigoPostal": codigo_postal_input.value,
         }
         success = controller.update_user(user_id_input.value, updated_data)
-        result_text.value = "Usuario actualizado correctamente" if success else "Error al actualizar usuario"
+        result_text.value = (
+            "Usuario actualizado correctamente"
+            if success
+            else "Error al actualizar usuario"
+        )
         page.update()
 
     # 📌 Función para eliminar un usuario
     def delete_user(e):
         success = controller.delete_user(user_id_input.value)
-        result_text.value = "Usuario eliminado correctamente" if success else "Error al eliminar usuario"
+        result_text.value = (
+            "Usuario eliminado correctamente"
+            if success
+            else "Error al eliminar usuario"
+        )
         page.update()
 
     # 📝 Elementos de la UI
@@ -58,20 +70,33 @@ def user_view(page: ft.Page):
     result_text = ft.Text("")
 
     # 📌 Botones CRUD
-    register_button = ft.ElevatedButton(text="Registrar Usuario", on_click=register_user)
+    register_button = ft.ElevatedButton(
+        text="Registrar Usuario", on_click=register_user
+    )
     search_button = ft.ElevatedButton(text="Buscar Usuario", on_click=search_user)
     update_button = ft.ElevatedButton(text="Actualizar Usuario", on_click=update_user)
     delete_button = ft.ElevatedButton(text="Eliminar Usuario", on_click=delete_user)
 
     # 📌 Agregar elementos a la UI
     page.add(
-        ft.Column([
-            user_id_input, email_input, password_input, 
-            nombre_input, apellido_input, telefono_input, 
-            ciudad_input, codigo_postal_input, 
-            register_button, search_button, update_button, delete_button,
-            result_text
-        ])
+        ft.Column(
+            [
+                user_id_input,
+                email_input,
+                password_input,
+                nombre_input,
+                apellido_input,
+                telefono_input,
+                ciudad_input,
+                codigo_postal_input,
+                register_button,
+                search_button,
+                update_button,
+                delete_button,
+                result_text,
+            ]
+        )
     )
+
 
 ft.app(target=user_view)

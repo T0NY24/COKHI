@@ -19,5 +19,7 @@ firebase_config = {
 firebase = pyrebase.initialize_app(firebase_config)
 auth = firebase.auth()
 firebase_admin.initialize_app(cred)
+
+
 def get_auth():
     return auth

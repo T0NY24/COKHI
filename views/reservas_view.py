@@ -1,6 +1,7 @@
 import flet as ft
 from controllers.reservas_controller import ReservasController
 
+
 def reservas_view(page: ft.Page):
     page.title = "Gestión de Reservas"
     controller = ReservasController()
@@ -8,11 +9,15 @@ def reservas_view(page: ft.Page):
     # 📌 Función para crear una reserva
     def create_reservation(e):
         success = controller.crear_reserva(
-            usuario_id_input.value, cuidador_id_input.value, 
-            fecha_inicio_input.value, fecha_fin_input.value, 
-            {"nombre": mascota_nombre_input.value, "tipo": mascota_tipo_input.value}
+            usuario_id_input.value,
+            cuidador_id_input.value,
+            fecha_inicio_input.value,
+            fecha_fin_input.value,
+            {"nombre": mascota_nombre_input.value, "tipo": mascota_tipo_input.value},
         )
-        result_text.value = "Reserva creada correctamente" if success else "Error al crear reserva"
+        result_text.value = (
+            "Reserva creada correctamente" if success else "Error al crear reserva"
+        )
         page.update()
 
     # 📌 Función para buscar una reserva por ID
@@ -33,14 +38,24 @@ def reservas_view(page: ft.Page):
 
     # 📌 Función para actualizar el estado de una reserva
     def update_reservation_status(e):
-        success = controller.actualizar_estado_reserva(reserva_id_input.value, estado_input.value)
-        result_text.value = "Estado actualizado correctamente" if success else "Error al actualizar estado"
+        success = controller.actualizar_estado_reserva(
+            reserva_id_input.value, estado_input.value
+        )
+        result_text.value = (
+            "Estado actualizado correctamente"
+            if success
+            else "Error al actualizar estado"
+        )
         page.update()
 
     # 📌 Función para eliminar una reserva
     def delete_reservation(e):
         success = controller.eliminar_reserva(reserva_id_input.value)
-        result_text.value = "Reserva eliminada correctamente" if success else "Error al eliminar reserva"
+        result_text.value = (
+            "Reserva eliminada correctamente"
+            if success
+            else "Error al eliminar reserva"
+        )
         page.update()
 
     # 📝 UI Elements
@@ -57,27 +72,43 @@ def reservas_view(page: ft.Page):
             ft.dropdown.Option("pendiente"),
             ft.dropdown.Option("aceptada"),
             ft.dropdown.Option("rechazada"),
-        ]
+        ],
     )
 
     # 📌 CRUD Buttons
     create_button = ft.ElevatedButton(text="Crear Reserva", on_click=create_reservation)
-    search_button = ft.ElevatedButton(text="Buscar Reserva", on_click=search_reservation)
-    update_button = ft.ElevatedButton(text="Actualizar Estado", on_click=update_reservation_status)
-    delete_button = ft.ElevatedButton(text="Eliminar Reserva", on_click=delete_reservation)
+    search_button = ft.ElevatedButton(
+        text="Buscar Reserva", on_click=search_reservation
+    )
+    update_button = ft.ElevatedButton(
+        text="Actualizar Estado", on_click=update_reservation_status
+    )
+    delete_button = ft.ElevatedButton(
+        text="Eliminar Reserva", on_click=delete_reservation
+    )
 
     result_text = ft.Text("")
 
     # 📌 Agregar elementos a la UI
     page.add(
-        ft.Column([
-            reserva_id_input, usuario_id_input, cuidador_id_input, 
-            fecha_inicio_input, fecha_fin_input, 
-            mascota_nombre_input, mascota_tipo_input, 
-            estado_input, 
-            create_button, search_button, update_button, delete_button,
-            result_text
-        ])
+        ft.Column(
+            [
+                reserva_id_input,
+                usuario_id_input,
+                cuidador_id_input,
+                fecha_inicio_input,
+                fecha_fin_input,
+                mascota_nombre_input,
+                mascota_tipo_input,
+                estado_input,
+                create_button,
+                search_button,
+                update_button,
+                delete_button,
+                result_text,
+            ]
+        )
     )
+
 
 ft.app(target=reservas_view)

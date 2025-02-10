@@ -7,6 +7,7 @@ from firebase_admin import credentials, firestore
 
 UPLOAD_FOLDER = "uploads"
 
+
 class FirebaseModel:
     def __init__(self):
         # Configuración de Firebase para Pyrebase (Autenticación)
@@ -17,7 +18,7 @@ class FirebaseModel:
             "storageBucket": "hubuide.appspot.com",
             "messagingSenderId": "767282462248",
             "appId": "1:767282462248:web:d27c9856a65bfe6d38ff1d",
-            "databaseURL": ""
+            "databaseURL": "",
         }
 
         # 🔹 Inicializar Pyrebase
@@ -30,7 +31,9 @@ class FirebaseModel:
         # 🔹 Inicializar Firebase Admin SDK para Firestore
         try:
             if not firebase_admin._apps:
-                cred = credentials.Certificate("HubUIDE/hubuide-firebase-adminsdk-4p82r-c015f8b288.json")
+                cred = credentials.Certificate(
+                    "HubUIDE/hubuide-firebase-adminsdk-4p82r-c015f8b288.json"
+                )
                 firebase_admin.initialize_app(cred)
             self.db = firestore.client()
         except Exception as e:
@@ -63,7 +66,17 @@ class FirebaseModel:
 
     ### 📌 CRUD de Usuarios ###
 
-    def save_user_data(self, user_id, nombre, apellido, telefono, ciudad, codigo_postal, correo_electronico, fecha_registro):
+    def save_user_data(
+        self,
+        user_id,
+        nombre,
+        apellido,
+        telefono,
+        ciudad,
+        codigo_postal,
+        correo_electronico,
+        fecha_registro,
+    ):
         """📥 Guardar un nuevo usuario en Firestore."""
         try:
             user_data = {
@@ -74,7 +87,7 @@ class FirebaseModel:
                 "CodigoPostal": codigo_postal,
                 "CorreoElectronico": correo_electronico,
                 "FechaRegistro": fecha_registro,
-                "FotoPerfil": f"{UPLOAD_FOLDER}/{user_id}.jpg"
+                "FotoPerfil": f"{UPLOAD_FOLDER}/{user_id}.jpg",
             }
             self.db.collection("Usuarios").document(user_id).set(user_data)
             print(f"✅ Usuario {nombre} {apellido} guardado en Firestore.")
@@ -91,10 +104,9 @@ class FirebaseModel:
         except Exception as e:
             print(f"❌ Error retrieving user data: {e}")
             return None
-        
 
     def get_all_users(self):
-    
+
         try:
             users_ref = self.db.collection("Usuarios").stream()
             users = [{"id": doc.id, **doc.to_dict()} for doc in users_ref]
@@ -103,7 +115,6 @@ class FirebaseModel:
         except Exception as e:
             print(f"❌ Error retrieving users: {e}")
             return []
-
 
     def update_user_data(self, user_id, updated_data):
         """🔄 Actualizar información del usuario."""
@@ -127,7 +138,9 @@ class FirebaseModel:
 
     ### 📌 CRUD de Cuidadores ###
 
-    def save_caregiver_data(self, caregiver_id, nombre, apellido, cedula, email, telefono, fecha_registro):
+    def save_caregiver_data(
+        self, caregiver_id, nombre, apellido, cedula, email, telefono, fecha_registro
+    ):
         """📥 Guardar información de un cuidador."""
         try:
             caregiver_data = {
@@ -136,7 +149,7 @@ class FirebaseModel:
                 "Cedula": cedula,
                 "Email": email,
                 "Telefono": telefono,
-                "FechaRegistro": fecha_registro
+                "FechaRegistro": fecha_registro,
             }
             self.db.collection("Cuidadores").document(caregiver_id).set(caregiver_data)
             print(f"✅ Cuidador {nombre} {apellido} guardado en Firestore.")
@@ -144,25 +157,26 @@ class FirebaseModel:
         except Exception as e:
             print(f"❌ Error saving caregiver data: {e}")
             return False
-        
-        
+
     def get_all_caregivers(self):
-    
+
         try:
             caregivers_ref = self.db.collection("Cuidadores").stream()
-            caregivers = [{"id": doc.id, **doc.to_dict()} for doc in caregivers_ref]  # Agrega el ID manualmente
+            caregivers = [
+                {"id": doc.id, **doc.to_dict()} for doc in caregivers_ref
+            ]  # Agrega el ID manualmente
             print(f"✅ {len(caregivers)} cuidadores obtenidos de Firestore.")
             return caregivers
         except Exception as e:
             print(f"❌ Error retrieving caregivers: {e}")
             return []
 
-
-
     def get_caregiver_data(self, caregiver_id):
         """📤 Obtener datos de un cuidador."""
         try:
-            caregiver_data = self.db.collection("Cuidadores").document(caregiver_id).get()
+            caregiver_data = (
+                self.db.collection("Cuidadores").document(caregiver_id).get()
+            )
             return caregiver_data.to_dict()
         except Exception as e:
             print(f"❌ Error retrieving caregiver data: {e}")
@@ -181,7 +195,9 @@ class FirebaseModel:
 
     ### 📌 CRUD de Reservas ###
 
-    def create_reservation(self, usuario_id, cuidador_id, fecha_inicio, fecha_fin, mascota):
+    def create_reservation(
+        self, usuario_id, cuidador_id, fecha_inicio, fecha_fin, mascota
+    ):
         """📥 Crear una nueva reserva."""
         try:
             reserva_data = {
@@ -191,7 +207,7 @@ class FirebaseModel:
                 "fecha_fin": fecha_fin,
                 "estado": "pendiente",
                 "mascota": mascota,
-                "fecha_creacion": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                "fecha_creacion": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             }
             doc_ref = self.db.collection("Reservas").add(reserva_data)
             return doc_ref[1].id
@@ -202,7 +218,9 @@ class FirebaseModel:
     def update_reservation_status(self, reserva_id, nuevo_estado):
         """🔄 Actualizar estado de una reserva."""
         try:
-            self.db.collection("Reservas").document(reserva_id).update({"estado": nuevo_estado})
+            self.db.collection("Reservas").document(reserva_id).update(
+                {"estado": nuevo_estado}
+            )
             return True
         except Exception as e:
             print(f"❌ Error updating reservation status: {e}")

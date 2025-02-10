@@ -1,10 +1,15 @@
 import flet as ft
-from views.auth_view import login_view, signup_view, cuidador_signup_view  # Vistas de autenticación
+from views.auth_view import (
+    login_view,
+    signup_view,
+    cuidador_signup_view,
+)  # Vistas de autenticación
 from views.main_page import main_page  # Pantalla principal (tipo Tinder)
 from views.user_view import user_view  # Gestión de usuarios
 from views.caregiver_view import caregiver_view  # Gestión de cuidadores
 from views.reservas_view import reservas_view  # Gestión de reservas
 from views.profile_view import profile_view  # Perfil de usuario
+
 
 def route_change(page: ft.Page):
     """📌 Maneja el cambio de rutas en la app."""
@@ -21,7 +26,9 @@ def route_change(page: ft.Page):
         "/usuarios": lambda p: user_view(p),
         "/cuidadores": lambda p: caregiver_view(p),
         "/reservas": lambda p: reservas_view(p),
-        "/perfil": lambda p: profile_view(p, "tcp4dtDtjYV8hCCACDNfunjmdYt1"),  # ⚠️ ID dinámico
+        "/perfil": lambda p: profile_view(
+            p, "tcp4dtDtjYV8hCCACDNfunjmdYt1"
+        ),  # ⚠️ ID dinámico
     }
 
     # Agregar la vista si la ruta existe, de lo contrario ir a login

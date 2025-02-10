@@ -8,13 +8,14 @@ from controllers.reservas_controller import ReservasController
 from controllers.admin_controller import AdminController
 
 # Color constants
-PRIMARY_COLOR = "#25523E"     # Dark green
-SECONDARY_COLOR = "#6D4318"   # Brown
-ACCENT_COLOR = "#F7AC5E"      # Orange
+PRIMARY_COLOR = "#25523E"  # Dark green
+SECONDARY_COLOR = "#6D4318"  # Brown
+ACCENT_COLOR = "#F7AC5E"  # Orange
 BACKGROUND_COLOR = "#FCFAFA"  # Off-white
 
 # Admin email
 ADMIN_EMAIL = "anperezcue@uide.edu.ec"
+
 
 def main(page: ft.Page):
     page.title = "Cokhi - Cuidado de Mascotas"
@@ -45,8 +46,8 @@ def main(page: ft.Page):
             shadow=ft.BoxShadow(
                 spread_radius=1,
                 blur_radius=15,
-                color=ft.colors.with_opacity(0.2, "black")
-            )
+                color=ft.colors.with_opacity(0.2, "black"),
+            ),
         )
 
     def create_styled_button(text, on_click):
@@ -56,37 +57,49 @@ def main(page: ft.Page):
                 shape=ft.RoundedRectangleBorder(radius=8),
                 bgcolor={
                     ft.MaterialState.DEFAULT: PRIMARY_COLOR,
-                    ft.MaterialState.HOVERED: ACCENT_COLOR
-                }
+                    ft.MaterialState.HOVERED: ACCENT_COLOR,
+                },
             ),
             width=320,
             height=45,
-            on_click=on_click
+            on_click=on_click,
         )
 
     def create_input_field(label, icon, password=False, hint_text=""):
         return ft.Container(
-            content=ft.Row([
-                ft.Icon(icon, color=PRIMARY_COLOR),
-                ft.TextField(
-                    label=label,
-                    password=password,
-                    hint_text=hint_text,
-                    border_color=PRIMARY_COLOR,
-                    cursor_color=PRIMARY_COLOR,
-                    color=SECONDARY_COLOR,
-                    expand=True,
-                    text_size=14
-                )
-            ], spacing=10),
-            padding=ft.padding.only(bottom=20)
+            content=ft.Row(
+                [
+                    ft.Icon(icon, color=PRIMARY_COLOR),
+                    ft.TextField(
+                        label=label,
+                        password=password,
+                        hint_text=hint_text,
+                        border_color=PRIMARY_COLOR,
+                        cursor_color=PRIMARY_COLOR,
+                        color=SECONDARY_COLOR,
+                        expand=True,
+                        text_size=14,
+                    ),
+                ],
+                spacing=10,
+            ),
+            padding=ft.padding.only(bottom=20),
         )
 
     def login_view():
-        email_input = create_input_field("Correo Electrónico", ft.icons.PERSON_OUTLINE, hint_text="tu@email.com")
-        password_input = create_input_field("Contraseña", ft.icons.LOCK_OUTLINE, password=True, hint_text="Ingresa tu contraseña")
+        email_input = create_input_field(
+            "Correo Electrónico", ft.icons.PERSON_OUTLINE, hint_text="tu@email.com"
+        )
+        password_input = create_input_field(
+            "Contraseña",
+            ft.icons.LOCK_OUTLINE,
+            password=True,
+            hint_text="Ingresa tu contraseña",
+        )
         error_text = ft.Text("", color="red", size=14, visible=False)
-        loading = ft.ProgressRing(width=16, height=16, stroke_width=2, color=PRIMARY_COLOR, visible=False)
+        loading = ft.ProgressRing(
+            width=16, height=16, stroke_width=2, color=PRIMARY_COLOR, visible=False
+        )
 
         def handle_login(e):
             loading.visible = True
@@ -122,25 +135,44 @@ def main(page: ft.Page):
 
         login_button = create_styled_button("Iniciar Sesión", handle_login)
 
-        header = ft.Column([
-            ft.Text("Cokhi", size=32, weight=ft.FontWeight.BOLD, color=PRIMARY_COLOR, text_align=ft.TextAlign.CENTER),
-            ft.Text("Cuidado de Mascotas", size=16, color=SECONDARY_COLOR, text_align=ft.TextAlign.CENTER)
-        ], alignment=ft.MainAxisAlignment.CENTER)
+        header = ft.Column(
+            [
+                ft.Text(
+                    "Cokhi",
+                    size=32,
+                    weight=ft.FontWeight.BOLD,
+                    color=PRIMARY_COLOR,
+                    text_align=ft.TextAlign.CENTER,
+                ),
+                ft.Text(
+                    "Cuidado de Mascotas",
+                    size=16,
+                    color=SECONDARY_COLOR,
+                    text_align=ft.TextAlign.CENTER,
+                ),
+            ],
+            alignment=ft.MainAxisAlignment.CENTER,
+        )
 
         forgot_password = ft.Container(
-            content=ft.Row([
-                ft.Text("¿Olvidaste tu contraseña?", size=14, color=SECONDARY_COLOR),
-                ft.TextButton(
-                    "Recuperar",
-                    style=ft.ButtonStyle(
-                        color={
-                            ft.MaterialState.DEFAULT: ACCENT_COLOR,
-                            ft.MaterialState.HOVERED: PRIMARY_COLOR
-                        }
-                    )
-                )
-            ], alignment=ft.MainAxisAlignment.CENTER),
-            padding=ft.padding.only(top=20)
+            content=ft.Row(
+                [
+                    ft.Text(
+                        "¿Olvidaste tu contraseña?", size=14, color=SECONDARY_COLOR
+                    ),
+                    ft.TextButton(
+                        "Recuperar",
+                        style=ft.ButtonStyle(
+                            color={
+                                ft.MaterialState.DEFAULT: ACCENT_COLOR,
+                                ft.MaterialState.HOVERED: PRIMARY_COLOR,
+                            }
+                        ),
+                    ),
+                ],
+                alignment=ft.MainAxisAlignment.CENTER,
+            ),
+            padding=ft.padding.only(top=20),
         )
 
         signup_link = ft.TextButton(
@@ -149,51 +181,74 @@ def main(page: ft.Page):
             style=ft.ButtonStyle(
                 color={
                     ft.MaterialState.DEFAULT: SECONDARY_COLOR,
-                    ft.MaterialState.HOVERED: PRIMARY_COLOR
+                    ft.MaterialState.HOVERED: PRIMARY_COLOR,
                 }
-            )
+            ),
         )
 
         container = create_card_container(
-            ft.Column([
-                header,
-                email_input,
-                password_input,
-                login_button,
-                loading,
-                error_text,
-                forgot_password,
-                signup_link
-            ], alignment=ft.MainAxisAlignment.CENTER, spacing=10)
+            ft.Column(
+                [
+                    header,
+                    email_input,
+                    password_input,
+                    login_button,
+                    loading,
+                    error_text,
+                    forgot_password,
+                    signup_link,
+                ],
+                alignment=ft.MainAxisAlignment.CENTER,
+                spacing=10,
+            )
         )
 
         return ft.Container(
-            content=container,
-            alignment=ft.alignment.center,
-            expand=True
+            content=container, alignment=ft.alignment.center, expand=True
         )
 
     def signup_view():
         fields = {
-            "email": create_input_field("Correo Electrónico", ft.icons.EMAIL, hint_text="tu@email.com"),
-            "password": create_input_field("Contraseña", ft.icons.LOCK_OUTLINE, password=True, hint_text="Crea una contraseña segura"),
-            "nombre": create_input_field("Nombre", ft.icons.PERSON_OUTLINE, hint_text="Ingresa tu nombre"),
-            "apellido": create_input_field("Apellido", ft.icons.PERSON_OUTLINE, hint_text="Ingresa tu apellido"),
-            "telefono": create_input_field("Teléfono", ft.icons.PHONE, hint_text="Ingresa tu teléfono"),
-            "ciudad": create_input_field("Ciudad", ft.icons.LOCATION_ON, hint_text="Ingresa tu ciudad"),
-            "codigo_postal": create_input_field("Código Postal", ft.icons.MAP, hint_text="Ingresa tu código postal")
+            "email": create_input_field(
+                "Correo Electrónico", ft.icons.EMAIL, hint_text="tu@email.com"
+            ),
+            "password": create_input_field(
+                "Contraseña",
+                ft.icons.LOCK_OUTLINE,
+                password=True,
+                hint_text="Crea una contraseña segura",
+            ),
+            "nombre": create_input_field(
+                "Nombre", ft.icons.PERSON_OUTLINE, hint_text="Ingresa tu nombre"
+            ),
+            "apellido": create_input_field(
+                "Apellido", ft.icons.PERSON_OUTLINE, hint_text="Ingresa tu apellido"
+            ),
+            "telefono": create_input_field(
+                "Teléfono", ft.icons.PHONE, hint_text="Ingresa tu teléfono"
+            ),
+            "ciudad": create_input_field(
+                "Ciudad", ft.icons.LOCATION_ON, hint_text="Ingresa tu ciudad"
+            ),
+            "codigo_postal": create_input_field(
+                "Código Postal", ft.icons.MAP, hint_text="Ingresa tu código postal"
+            ),
         }
 
         error_text = ft.Text("", color="red", size=14, visible=False)
-        loading = ft.ProgressRing(width=16, height=16, stroke_width=2, color=PRIMARY_COLOR, visible=False)
+        loading = ft.ProgressRing(
+            width=16, height=16, stroke_width=2, color=PRIMARY_COLOR, visible=False
+        )
 
         def handle_signup(e):
             loading.visible = True
             error_text.visible = False
             page.update()
 
-            values = {key: field.content.controls[1].value for key, field in fields.items()}
-            
+            values = {
+                key: field.content.controls[1].value for key, field in fields.items()
+            }
+
             if not all(values.values()):
                 error_text.value = "Por favor completa todos los campos"
                 error_text.visible = True
@@ -209,7 +264,7 @@ def main(page: ft.Page):
                     "telefono": values["telefono"],
                     "ciudad": values["ciudad"],
                     "codigoPostal": values["codigo_postal"],
-                    "fechaRegistro": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    "fechaRegistro": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 }
 
                 if auth_controller.signup_user(user_data, values["password"]):
@@ -226,9 +281,18 @@ def main(page: ft.Page):
 
         signup_button = create_styled_button("Registrarse", handle_signup)
 
-        header = ft.Column([
-            ft.Text("Registro de Usuario", size=32, weight=ft.FontWeight.BOLD, color=PRIMARY_COLOR, text_align=ft.TextAlign.CENTER),
-        ], alignment=ft.MainAxisAlignment.CENTER)
+        header = ft.Column(
+            [
+                ft.Text(
+                    "Registro de Usuario",
+                    size=32,
+                    weight=ft.FontWeight.BOLD,
+                    color=PRIMARY_COLOR,
+                    text_align=ft.TextAlign.CENTER,
+                ),
+            ],
+            alignment=ft.MainAxisAlignment.CENTER,
+        )
 
         login_link = ft.TextButton(
             "¿Ya tienes cuenta? Inicia Sesión",
@@ -236,9 +300,9 @@ def main(page: ft.Page):
             style=ft.ButtonStyle(
                 color={
                     ft.MaterialState.DEFAULT: SECONDARY_COLOR,
-                    ft.MaterialState.HOVERED: PRIMARY_COLOR
+                    ft.MaterialState.HOVERED: PRIMARY_COLOR,
                 }
-            )
+            ),
         )
 
         caregiver_link = ft.TextButton(
@@ -247,47 +311,64 @@ def main(page: ft.Page):
             style=ft.ButtonStyle(
                 color={
                     ft.MaterialState.DEFAULT: SECONDARY_COLOR,
-                    ft.MaterialState.HOVERED: PRIMARY_COLOR
+                    ft.MaterialState.HOVERED: PRIMARY_COLOR,
                 }
-            )
+            ),
         )
 
         container = create_card_container(
             ft.Column(
-                [header] + 
-                list(fields.values()) + 
-                [signup_button, loading, error_text, login_link, caregiver_link],
+                [header]
+                + list(fields.values())
+                + [signup_button, loading, error_text, login_link, caregiver_link],
                 alignment=ft.MainAxisAlignment.CENTER,
-                spacing=10
+                spacing=10,
             )
         )
 
         return ft.Container(
-            content=container,
-            alignment=ft.alignment.center,
-            expand=True
+            content=container, alignment=ft.alignment.center, expand=True
         )
 
     def signup_cuidador_view():
         fields = {
-            "email": create_input_field("Correo Electrónico", ft.icons.EMAIL, hint_text="tu@email.com"),
-            "password": create_input_field("Contraseña", ft.icons.LOCK_OUTLINE, password=True, hint_text="Crea una contraseña segura"),
-            "nombre": create_input_field("Nombre", ft.icons.PERSON_OUTLINE, hint_text="Ingresa tu nombre"),
-            "apellido": create_input_field("Apellido", ft.icons.PERSON_OUTLINE, hint_text="Ingresa tu apellido"),
-            "cedula": create_input_field("Cédula", ft.icons.BADGE, hint_text="Ingresa tu cédula"),
-            "telefono": create_input_field("Teléfono", ft.icons.PHONE, hint_text="Ingresa tu teléfono")
+            "email": create_input_field(
+                "Correo Electrónico", ft.icons.EMAIL, hint_text="tu@email.com"
+            ),
+            "password": create_input_field(
+                "Contraseña",
+                ft.icons.LOCK_OUTLINE,
+                password=True,
+                hint_text="Crea una contraseña segura",
+            ),
+            "nombre": create_input_field(
+                "Nombre", ft.icons.PERSON_OUTLINE, hint_text="Ingresa tu nombre"
+            ),
+            "apellido": create_input_field(
+                "Apellido", ft.icons.PERSON_OUTLINE, hint_text="Ingresa tu apellido"
+            ),
+            "cedula": create_input_field(
+                "Cédula", ft.icons.BADGE, hint_text="Ingresa tu cédula"
+            ),
+            "telefono": create_input_field(
+                "Teléfono", ft.icons.PHONE, hint_text="Ingresa tu teléfono"
+            ),
         }
 
         error_text = ft.Text("", color="red", size=14, visible=False)
-        loading = ft.ProgressRing(width=16, height=16, stroke_width=2, color=PRIMARY_COLOR, visible=False)
+        loading = ft.ProgressRing(
+            width=16, height=16, stroke_width=2, color=PRIMARY_COLOR, visible=False
+        )
 
         def handle_signup(e):
             loading.visible = True
             error_text.visible = False
             page.update()
 
-            values = {key: field.content.controls[1].value for key, field in fields.items()}
-            
+            values = {
+                key: field.content.controls[1].value for key, field in fields.items()
+            }
+
             if not all(values.values()):
                 error_text.value = "Por favor completa todos los campos"
                 error_text.visible = True
@@ -302,7 +383,7 @@ def main(page: ft.Page):
                     "apellido": values["apellido"],
                     "cedula": values["cedula"],
                     "telefono": values["telefono"],
-                    "fechaRegistro": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    "fechaRegistro": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 }
 
                 if auth_controller.signup_caregiver(cuidador_data, values["password"]):
@@ -319,9 +400,18 @@ def main(page: ft.Page):
 
         signup_button = create_styled_button("Registrarse como Cuidador", handle_signup)
 
-        header = ft.Column([
-            ft.Text("Registro de Cuidador", size=32, weight=ft.FontWeight.BOLD, color=PRIMARY_COLOR, text_align=ft.TextAlign.CENTER),
-        ], alignment=ft.MainAxisAlignment.CENTER)
+        header = ft.Column(
+            [
+                ft.Text(
+                    "Registro de Cuidador",
+                    size=32,
+                    weight=ft.FontWeight.BOLD,
+                    color=PRIMARY_COLOR,
+                    text_align=ft.TextAlign.CENTER,
+                ),
+            ],
+            alignment=ft.MainAxisAlignment.CENTER,
+        )
 
         login_link = ft.TextButton(
             "¿Ya tienes cuenta? Inicia Sesión",
@@ -329,25 +419,23 @@ def main(page: ft.Page):
             style=ft.ButtonStyle(
                 color={
                     ft.MaterialState.DEFAULT: SECONDARY_COLOR,
-                    ft.MaterialState.HOVERED: PRIMARY_COLOR
+                    ft.MaterialState.HOVERED: PRIMARY_COLOR,
                 }
-            )
+            ),
         )
 
         container = create_card_container(
             ft.Column(
-                [header] + 
-                list(fields.values()) + 
-                [signup_button, loading, error_text, login_link],
+                [header]
+                + list(fields.values())
+                + [signup_button, loading, error_text, login_link],
                 alignment=ft.MainAxisAlignment.CENTER,
-                spacing=10
+                spacing=10,
             )
         )
 
         return ft.Container(
-            content=container,
-            alignment=ft.alignment.center,
-            expand=True
+            content=container, alignment=ft.alignment.center, expand=True
         )
 
     def admin_dashboard():
@@ -359,24 +447,32 @@ def main(page: ft.Page):
                 border=ft.border.all(1, PRIMARY_COLOR),
                 border_radius=10,
                 heading_row_color=ft.colors.with_opacity(0.1, PRIMARY_COLOR),
-                columns=[ft.DataColumn(ft.Text(col, color=PRIMARY_COLOR)) for col in columns],
+                columns=[
+                    ft.DataColumn(ft.Text(col, color=PRIMARY_COLOR)) for col in columns
+                ],
                 rows=[
                     ft.DataRow(
                         cells=[
-                            ft.DataCell(ft.Text(str(row.get(col.lower(), "")), color=SECONDARY_COLOR))
+                            ft.DataCell(
+                                ft.Text(
+                                    str(row.get(col.lower(), "")), color=SECONDARY_COLOR
+                                )
+                            )
                             for col in columns[:-1]
-                        ] + [
+                        ]
+                        + [
                             ft.DataCell(
                                 ft.IconButton(
                                     ft.icons.DELETE_OUTLINE,
                                     icon_color="red",
                                     data=row.get("id"),
-                                    on_click=delete_action
+                                    on_click=delete_action,
                                 )
                             )
                         ]
-                    ) for row in data
-                ]
+                    )
+                    for row in data
+                ],
             )
 
         def delete_user(e):
@@ -388,13 +484,13 @@ def main(page: ft.Page):
                 update_view("admin_dashboard")
 
         users_table = create_data_table(
-            users,
-            ["Nombre", "Email", "Acciones"],
-            delete_user)
+            users, ["Nombre", "Email", "Acciones"], delete_user
+        )
 
-        caregivers_table = create_data_table(caregivers,
+        caregivers_table = create_data_table(
+            caregivers,
             ["Nombre", "Cédula", "Email", "Teléfono", "Acciones"],
-            delete_caregiver
+            delete_caregiver,
         )
 
         header = ft.Text(
@@ -402,26 +498,39 @@ def main(page: ft.Page):
             size=32,
             weight=ft.FontWeight.BOLD,
             color=PRIMARY_COLOR,
-            text_align=ft.TextAlign.CENTER
+            text_align=ft.TextAlign.CENTER,
         )
 
         container = ft.Container(
-            content=ft.Column([
-                header,
-                ft.Text("Usuarios Registrados", size=20, color=SECONDARY_COLOR, weight=ft.FontWeight.BOLD),
-                users_table,
-                ft.Divider(height=40, color=PRIMARY_COLOR),
-                ft.Text("Cuidadores Registrados", size=20, color=SECONDARY_COLOR, weight=ft.FontWeight.BOLD),
-                caregivers_table
-            ], spacing=20),
+            content=ft.Column(
+                [
+                    header,
+                    ft.Text(
+                        "Usuarios Registrados",
+                        size=20,
+                        color=SECONDARY_COLOR,
+                        weight=ft.FontWeight.BOLD,
+                    ),
+                    users_table,
+                    ft.Divider(height=40, color=PRIMARY_COLOR),
+                    ft.Text(
+                        "Cuidadores Registrados",
+                        size=20,
+                        color=SECONDARY_COLOR,
+                        weight=ft.FontWeight.BOLD,
+                    ),
+                    caregivers_table,
+                ],
+                spacing=20,
+            ),
             padding=40,
             bgcolor=BACKGROUND_COLOR,
             border_radius=10,
             shadow=ft.BoxShadow(
                 spread_radius=1,
                 blur_radius=15,
-                color=ft.colors.with_opacity(0.2, "black")
-            )
+                color=ft.colors.with_opacity(0.2, "black"),
+            ),
         )
 
         return container
@@ -434,53 +543,59 @@ def main(page: ft.Page):
                     "No hay cuidadores disponibles",
                     size=20,
                     color="red",
-                    text_align=ft.TextAlign.CENTER
+                    text_align=ft.TextAlign.CENTER,
                 ),
-                alignment=ft.alignment.center
+                alignment=ft.alignment.center,
             )
 
         current_index = [0]  # Using list to make it mutable in nested functions
 
         def create_caregiver_card(caregiver):
             return ft.Container(
-                content=ft.Column([
-                    ft.Image(
-                        src=caregiver.get("image", "https://via.placeholder.com/300"),
-                        width=300,
-                        height=300,
-                        fit=ft.ImageFit.COVER,
-                        border_radius=ft.border_radius.all(10)
-                    ),
-                    ft.Text(
-                        f"{caregiver.get('Nombre', '')} {caregiver.get('Apellido', '')}",
-                        size=24,
-                        weight=ft.FontWeight.BOLD,
-                        color=PRIMARY_COLOR
-                    ),
-                    ft.Text(
-                        f"📄 Cédula: {caregiver.get('Cedula', '')}",
-                        size=16,
-                        color=SECONDARY_COLOR
-                    ),
-                    ft.Text(
-                        f"📧 Email: {caregiver.get('Email', '')}",
-                        size=16,
-                        color=SECONDARY_COLOR
-                    ),
-                    ft.Text(
-                        f"📞 Teléfono: {caregiver.get('Telefono', '')}",
-                        size=16,
-                        color=SECONDARY_COLOR
-                    )
-                ], alignment=ft.MainAxisAlignment.CENTER, spacing=10),
+                content=ft.Column(
+                    [
+                        ft.Image(
+                            src=caregiver.get(
+                                "image", "https://via.placeholder.com/300"
+                            ),
+                            width=300,
+                            height=300,
+                            fit=ft.ImageFit.COVER,
+                            border_radius=ft.border_radius.all(10),
+                        ),
+                        ft.Text(
+                            f"{caregiver.get('Nombre', '')} {caregiver.get('Apellido', '')}",
+                            size=24,
+                            weight=ft.FontWeight.BOLD,
+                            color=PRIMARY_COLOR,
+                        ),
+                        ft.Text(
+                            f"📄 Cédula: {caregiver.get('Cedula', '')}",
+                            size=16,
+                            color=SECONDARY_COLOR,
+                        ),
+                        ft.Text(
+                            f"📧 Email: {caregiver.get('Email', '')}",
+                            size=16,
+                            color=SECONDARY_COLOR,
+                        ),
+                        ft.Text(
+                            f"📞 Teléfono: {caregiver.get('Telefono', '')}",
+                            size=16,
+                            color=SECONDARY_COLOR,
+                        ),
+                    ],
+                    alignment=ft.MainAxisAlignment.CENTER,
+                    spacing=10,
+                ),
                 padding=20,
                 bgcolor=BACKGROUND_COLOR,
                 border_radius=10,
                 shadow=ft.BoxShadow(
                     spread_radius=1,
                     blur_radius=15,
-                    color=ft.colors.with_opacity(0.2, "black")
-                )
+                    color=ft.colors.with_opacity(0.2, "black"),
+                ),
             )
 
         def create_action_buttons():
@@ -499,7 +614,7 @@ def main(page: ft.Page):
                     cuidador_id=caregiver["id"],
                     fecha_inicio="2025-02-01",
                     fecha_fin="2025-02-07",
-                    mascota={"nombre": "Firulais", "tipo": "Perro"}
+                    mascota={"nombre": "Firulais", "tipo": "Perro"},
                 )
                 if reservation_id:
                     result_text.value = "✅ Reserva creada exitosamente"
@@ -507,44 +622,50 @@ def main(page: ft.Page):
                     result_text.value = "❌ Error al crear la reserva"
                 page.update()
 
-            return ft.Row([
-                ft.ElevatedButton(
-                    content=ft.Text("❌ Rechazar", color="white"),
-                    style=ft.ButtonStyle(
-                        shape=ft.RoundedRectangleBorder(radius=8),
-                        bgcolor={
-                            ft.MaterialState.DEFAULT: "red",
-                            ft.MaterialState.HOVERED: "#ff6666"
-                        }
+            return ft.Row(
+                [
+                    ft.ElevatedButton(
+                        content=ft.Text("❌ Rechazar", color="white"),
+                        style=ft.ButtonStyle(
+                            shape=ft.RoundedRectangleBorder(radius=8),
+                            bgcolor={
+                                ft.MaterialState.DEFAULT: "red",
+                                ft.MaterialState.HOVERED: "#ff6666",
+                            },
+                        ),
+                        on_click=handle_reject,
                     ),
-                    on_click=handle_reject
-                ),
-                ft.ElevatedButton(
-                    content=ft.Text("ℹ️ Info", color="white"),
-                    style=ft.ButtonStyle(
-                        shape=ft.RoundedRectangleBorder(radius=8),
-                        bgcolor={
-                            ft.MaterialState.DEFAULT: SECONDARY_COLOR,
-                            ft.MaterialState.HOVERED: ACCENT_COLOR
-                        }
+                    ft.ElevatedButton(
+                        content=ft.Text("ℹ️ Info", color="white"),
+                        style=ft.ButtonStyle(
+                            shape=ft.RoundedRectangleBorder(radius=8),
+                            bgcolor={
+                                ft.MaterialState.DEFAULT: SECONDARY_COLOR,
+                                ft.MaterialState.HOVERED: ACCENT_COLOR,
+                            },
+                        ),
+                        on_click=lambda _: show_info_dialog(),
                     ),
-                    on_click=lambda _: show_info_dialog()
-                ),
-                ft.ElevatedButton(
-                    content=ft.Text("✅ Aceptar", color="white"),
-                    style=ft.ButtonStyle(
-                        shape=ft.RoundedRectangleBorder(radius=8),
-                        bgcolor={
-                            ft.MaterialState.DEFAULT: PRIMARY_COLOR,
-                            ft.MaterialState.HOVERED: ACCENT_COLOR
-                        }
+                    ft.ElevatedButton(
+                        content=ft.Text("✅ Aceptar", color="white"),
+                        style=ft.ButtonStyle(
+                            shape=ft.RoundedRectangleBorder(radius=8),
+                            bgcolor={
+                                ft.MaterialState.DEFAULT: PRIMARY_COLOR,
+                                ft.MaterialState.HOVERED: ACCENT_COLOR,
+                            },
+                        ),
+                        on_click=handle_accept,
                     ),
-                    on_click=handle_accept
-                )
-            ], alignment=ft.MainAxisAlignment.CENTER, spacing=20)
+                ],
+                alignment=ft.MainAxisAlignment.CENTER,
+                spacing=20,
+            )
 
         caregiver_display = ft.Container()
-        result_text = ft.Text("", color="green", size=16, text_align=ft.TextAlign.CENTER)
+        result_text = ft.Text(
+            "", color="green", size=16, text_align=ft.TextAlign.CENTER
+        )
 
         def update_caregiver_display():
             if current_index[0] >= len(caregivers):
@@ -557,33 +678,56 @@ def main(page: ft.Page):
             caregiver = caregivers[current_index[0]]
             dialog = ft.AlertDialog(
                 title=ft.Text("Información del Cuidador", size=20, color=PRIMARY_COLOR),
-                content=ft.Column([
-                    ft.Image(
-                        src=caregiver.get("image", "https://via.placeholder.com/300"),
-                        width=200,
-                        height=200,
-                        fit=ft.ImageFit.COVER,
-                        border_radius=ft.border_radius.all(10)
-                    ),
-                    ft.Text(
-                        f"{caregiver.get('Nombre', '')} {caregiver.get('Apellido', '')}",
-                        size=20,
-                        weight=ft.FontWeight.BOLD,
-                        color=PRIMARY_COLOR
-                    ),
-                    ft.Text(f"📄 Cédula: {caregiver.get('Cedula', '')}", size=16, color=SECONDARY_COLOR),
-                    ft.Text(f"📧 Email: {caregiver.get('Email', '')}", size=16, color=SECONDARY_COLOR),
-                    ft.Text(f"📞 Teléfono: {caregiver.get('Telefono', '')}", size=16, color=SECONDARY_COLOR),
-                    ft.Text(
-                        f"📅 Registrado: {caregiver.get('FechaRegistro', '')}",
-                        size=16,
-                        color=SECONDARY_COLOR
-                    )
-                ], alignment=ft.MainAxisAlignment.CENTER, spacing=10),
+                content=ft.Column(
+                    [
+                        ft.Image(
+                            src=caregiver.get(
+                                "image", "https://via.placeholder.com/300"
+                            ),
+                            width=200,
+                            height=200,
+                            fit=ft.ImageFit.COVER,
+                            border_radius=ft.border_radius.all(10),
+                        ),
+                        ft.Text(
+                            f"{caregiver.get('Nombre', '')} {caregiver.get('Apellido', '')}",
+                            size=20,
+                            weight=ft.FontWeight.BOLD,
+                            color=PRIMARY_COLOR,
+                        ),
+                        ft.Text(
+                            f"📄 Cédula: {caregiver.get('Cedula', '')}",
+                            size=16,
+                            color=SECONDARY_COLOR,
+                        ),
+                        ft.Text(
+                            f"📧 Email: {caregiver.get('Email', '')}",
+                            size=16,
+                            color=SECONDARY_COLOR,
+                        ),
+                        ft.Text(
+                            f"📞 Teléfono: {caregiver.get('Telefono', '')}",
+                            size=16,
+                            color=SECONDARY_COLOR,
+                        ),
+                        ft.Text(
+                            f"📅 Registrado: {caregiver.get('FechaRegistro', '')}",
+                            size=16,
+                            color=SECONDARY_COLOR,
+                        ),
+                    ],
+                    alignment=ft.MainAxisAlignment.CENTER,
+                    spacing=10,
+                ),
                 actions=[
-                ft.TextButton("Cerrar", on_click=lambda e: (setattr(page.dialog, "open", False), page.update()))
-]
-
+                    ft.TextButton(
+                        "Cerrar",
+                        on_click=lambda e: (
+                            setattr(page.dialog, "open", False),
+                            page.update(),
+                        ),
+                    )
+                ],
             )
             page.dialog = dialog
             dialog.open = True
@@ -593,12 +737,12 @@ def main(page: ft.Page):
         update_caregiver_display()
 
         return ft.Container(
-            content=ft.Column([
-                caregiver_display,
-                create_action_buttons(),
-                result_text
-            ], alignment=ft.MainAxisAlignment.CENTER, spacing=20),
-            padding=20
+            content=ft.Column(
+                [caregiver_display, create_action_buttons(), result_text],
+                alignment=ft.MainAxisAlignment.CENTER,
+                spacing=20,
+            ),
+            padding=20,
         )
 
     def profile_view(user_id):
@@ -609,9 +753,9 @@ def main(page: ft.Page):
                     "Error al cargar el perfil",
                     size=20,
                     color="red",
-                    text_align=ft.TextAlign.CENTER
+                    text_align=ft.TextAlign.CENTER,
                 ),
-                alignment=ft.alignment.center
+                alignment=ft.alignment.center,
             )
 
         image_path = user_data.get("FotoPerfil", "https://via.placeholder.com/150")
@@ -620,7 +764,7 @@ def main(page: ft.Page):
             "nombre": create_input_field("Nombre", ft.icons.PERSON_OUTLINE),
             "apellido": create_input_field("Apellido", ft.icons.PERSON_OUTLINE),
             "telefono": create_input_field("Teléfono", ft.icons.PHONE),
-            "ciudad": create_input_field("Ciudad", ft.icons.LOCATION_ON)
+            "ciudad": create_input_field("Ciudad", ft.icons.LOCATION_ON),
         }
 
         for key, field in fields.items():
@@ -630,8 +774,10 @@ def main(page: ft.Page):
         success_text = ft.Text("", color="green", size=14, visible=False)
 
         def handle_update_profile(e):
-            values = {key: field.content.controls[1].value for key, field in fields.items()}
-            
+            values = {
+                key: field.content.controls[1].value for key, field in fields.items()
+            }
+
             if not all(values.values()):
                 error_text.value = "Por favor completa todos los campos"
                 error_text.visible = True
@@ -657,35 +803,37 @@ def main(page: ft.Page):
         update_button = create_styled_button("Guardar Cambios", handle_update_profile)
 
         container = create_card_container(
-            ft.Column([
-                ft.Image(
-                    src=image_path,
-                    width=150,
-                    height=150,
-                    fit=ft.ImageFit.COVER,
-                    border_radius=ft.border_radius.all(75)
-                ),
-                *fields.values(),
-                ft.Text(
-                    f"📧 Email: {user_data.get('Email', '')}",
-                    size=16,
-                    color=SECONDARY_COLOR
-                ),
-                update_button,
-                error_text,
-                success_text
-            ], alignment=ft.MainAxisAlignment.CENTER, spacing=10)
+            ft.Column(
+                [
+                    ft.Image(
+                        src=image_path,
+                        width=150,
+                        height=150,
+                        fit=ft.ImageFit.COVER,
+                        border_radius=ft.border_radius.all(75),
+                    ),
+                    *fields.values(),
+                    ft.Text(
+                        f"📧 Email: {user_data.get('Email', '')}",
+                        size=16,
+                        color=SECONDARY_COLOR,
+                    ),
+                    update_button,
+                    error_text,
+                    success_text,
+                ],
+                alignment=ft.MainAxisAlignment.CENTER,
+                spacing=10,
+            )
         )
 
         return ft.Container(
-            content=container,
-            alignment=ft.alignment.center,
-            expand=True
+            content=container, alignment=ft.alignment.center, expand=True
         )
 
     def update_view(view_name):
         content.controls.clear()
-        
+
         if view_name == "login":
             content.controls.append(login_view())
         elif view_name == "admin_dashboard":
@@ -697,22 +845,23 @@ def main(page: ft.Page):
         elif view_name == "main":
             content.controls.append(main_view())
         elif view_name == "profile":
-            content.controls.append(profile_view("tcp4dtDtjYV8hCCACDNfunjmdYt1"))  
+            content.controls.append(profile_view("tcp4dtDtjYV8hCCACDNfunjmdYt1"))
         else:
             content.controls.append(
                 ft.Text(
                     "Página no encontrada",
                     size=20,
                     color="red",
-                    text_align=ft.TextAlign.CENTER
+                    text_align=ft.TextAlign.CENTER,
                 )
             )
-        
+
         page.update()
 
     # Configuración inicial
     page.add(content)
     update_view("login")
+
 
 if __name__ == "__main__":
     ft.app(target=main)

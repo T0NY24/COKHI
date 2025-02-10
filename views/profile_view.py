@@ -2,6 +2,7 @@ import flet as ft
 from controllers.profile_controller import ProfileController
 import os
 
+
 def profile_view(page: ft.Page, user_id):
     page.title = "Mi Perfil"
     controller = ProfileController()
@@ -31,10 +32,14 @@ def profile_view(page: ft.Page, user_id):
             "Nombre": name_field.value,
             "Apellido": lastname_field.value,
             "Telefono": phone_field.value,
-            "Ciudad": city_field.value
+            "Ciudad": city_field.value,
         }
         success = controller.update_user_profile(user_id, updated_data)
-        result_text.value = "Perfil actualizado correctamente" if success else "Error actualizando perfil"
+        result_text.value = (
+            "Perfil actualizado correctamente"
+            if success
+            else "Error actualizando perfil"
+        )
         page.update()
 
     # 📌 Función para subir foto de perfil
@@ -61,17 +66,24 @@ def profile_view(page: ft.Page, user_id):
     # 📌 Agregar elementos a la UI
     page.overlay.append(file_picker)
     page.add(
-        ft.Column([
-            profile_picture,
-            upload_button,
-            name_field,
-            lastname_field,
-            phone_field,
-            email_text,
-            city_field,
-            update_button,
-            result_text
-        ], alignment=ft.MainAxisAlignment.CENTER, spacing=10)
+        ft.Column(
+            [
+                profile_picture,
+                upload_button,
+                name_field,
+                lastname_field,
+                phone_field,
+                email_text,
+                city_field,
+                update_button,
+                result_text,
+            ],
+            alignment=ft.MainAxisAlignment.CENTER,
+            spacing=10,
+        )
     )
 
-ft.app(target=lambda page: profile_view(page, "GUeE4UPyoqYcgt7zwkpRC3E5c4H3"))  # Reemplazar con user_id dinámico
+
+ft.app(
+    target=lambda page: profile_view(page, "GUeE4UPyoqYcgt7zwkpRC3E5c4H3")
+)  # Reemplazar con user_id dinámico

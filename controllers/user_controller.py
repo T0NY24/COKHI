@@ -1,15 +1,20 @@
 from models.firebase_model import FirebaseModel
 
+
 class UserController:
     def __init__(self):
         self.firebase = FirebaseModel()
 
-    def create_user(self, email, password, nombre, apellido, telefono, ciudad, codigo_postal):
+    def create_user(
+        self, email, password, nombre, apellido, telefono, ciudad, codigo_postal
+    ):
         """Registra un nuevo usuario y guarda sus datos en Firestore."""
         user = self.firebase.signup(email, password)
         if user:
-            user_id = user['localId']
-            success = self.firebase.save_user_data(user_id, nombre, apellido, telefono, ciudad, codigo_postal, email)
+            user_id = user["localId"]
+            success = self.firebase.save_user_data(
+                user_id, nombre, apellido, telefono, ciudad, codigo_postal, email
+            )
             return success
         return False
 

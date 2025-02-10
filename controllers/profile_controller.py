@@ -1,5 +1,6 @@
 from models.firebase_model import FirebaseModel
 
+
 class ProfileController:
     def __init__(self):
         """Inicializa el controlador con FirebaseModel."""
@@ -10,7 +11,7 @@ class ProfileController:
         if not user_id:
             print("❌ Error: ID de usuario no proporcionado.")
             return None
-        
+
         user_data = self.firebase.get_user_profile(user_id)
         if user_data:
             return user_data
