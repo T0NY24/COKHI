@@ -1,4 +1,4 @@
-name: Web Build + Deployment to GitHub Pages 
+name: Web Build + Deployment to GitHub Pages
 
 on:
   push:
@@ -32,28 +32,27 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: ${{ env.PYTHON_VERSION }}
+        cache: 'pip'  # Habilita caché para acelerar instalación de dependencias
 
     - name: Install Python Dependencies
       run: |
-          python -m pip install --upgrade pip
-          pip install wheel setuptools
-          pip install cryptography==42.0.5
-          
-          # Instalamos las dependencias base sin dependencias opcionales
-          pip install --no-deps google-api-core
-          pip install --no-deps google-cloud-core
-          pip install --no-deps google-auth
-          pip install --no-deps protobuf
-          
-          # Instalamos google-cloud-storage sin dependencias problemáticas
-          pip install google-cloud-storage --no-deps
-          
-          # Instalamos el resto de dependencias
-          pip install -r requirements.txt --no-deps
-          
-          # Instalamos Flet y sus dependencias necesarias
-          pip install flet-cli==0.25.0
-          pip install flet
+        echo "🔹 Actualizando pip y herramientas de instalación..."
+        python -m pip install --upgrade pip setuptools wheel
+
+        echo "🔹 Instalando dependencias esenciales..."
+        pip install cryptography==42.0.5
+
+        echo "🔹 Instalando dependencias base sin dependencias opcionales..."
+        pip install --no-deps google-api-core google-cloud-core google-auth protobuf
+
+        echo "🔹 Instalando google-cloud-storage sin dependencias problemáticas..."
+        pip install --no-deps google-cloud-storage
+
+        echo "🔹 Instalando el resto de dependencias..."
+        pip install -r requirements.txt --prefer-binary
+
+        echo "🔹 Instalando Flet y CLI..."
+        pip install flet-cli==0.25.0 flet
 
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
@@ -62,23 +61,28 @@ jobs:
 
     - name: Debug Directory Structure
       run: |
-        echo "Current directory contents:"
+        echo "📂 Current directory contents:"
         ls -la
-        echo "Full repository structure:"
+        echo "📂 Full repository structure:"
         find . -type f
-        echo "Python packages installed:"
-        pip list
+        echo "🐍 Installed Python packages:"
+        pip list --format=columns
 
     - name: Flet Build Web
       run: |
+        echo "🚀 Building Web App..."
         echo "GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}, USER: ${GITHUB_REPOSITORY%/*}, PROJECT_BASE_URL: ${GITHUB_REPOSITORY#*/}"
+
+        # Deshabilitar analíticas de Flutter para evitar logs innecesarios
         flutter config --no-analytics
+
+        # Verificar que app.py exista antes de intentar compilar
         if [ -f "HubUIDE/app.py" ]; then
           flet build web --module-name HubUIDE.app
         elif [ -f "app.py" ]; then
           flet build web --module-name app
         else
-          echo "Error: No app.py found in expected locations"
+          echo "❌ Error: No se encontró un archivo app.py en ubicaciones esperadas"
           exit 1
         fi
 
