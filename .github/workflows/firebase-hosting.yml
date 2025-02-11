@@ -19,7 +19,6 @@ env:
   BUILD_NUMBER: 1
   BUILD_VERSION: 1.0.0
   PYTHON_VERSION: 3.12.2
-  FLUTTER_VERSION: 3.22.2
 
 jobs:
   build:
@@ -44,11 +43,6 @@ jobs:
         pip install -r requirements.txt
         pip install flet-cli==0.25.0
 
-    - name: Setup Flutter ${{ env.FLUTTER_VERSION }}
-      uses: subosito/flutter-action@v2
-      with:
-        flutter-version: ${{ env.FLUTTER_VERSION }}
-
     - name: Debug Directory Structure
       run: |
         echo "Current directory contents:"
@@ -58,19 +52,17 @@ jobs:
 
     - name: Flet Build Web
       run: |
-        echo "GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}, USER: ${GITHUB_REPOSITORY%/*}, PROJECT_BASE_URL: ${GITHUB_REPOSITORY#*/}"
-        flutter config --no-analytics
         if [ -f "HubUIDE/app.py" ]; then
-          flet build web --entry-point HubUIDE/app.py --base-url ${GITHUB_REPOSITORY#*/} --route-url-strategy hash
+          flet build web --entry-point HubUIDE/app.py
         elif [ -f "app.py" ]; then
-          flet build web --entry-point app.py --base-url ${GITHUB_REPOSITORY#*/} --route-url-strategy hash
+          flet build web --entry-point app.py
         else
           echo "Error: No app.py found in expected locations"
           exit 1
         fi
 
     - name: Upload Artifact
-      uses: actions/upload-artifact@v4  # ✅ Corregido
+      uses: actions/upload-pages-artifact@v4
       with:
         name: web-build-artifact
         path: build/web
@@ -92,6 +84,6 @@ jobs:
       - name: Deploy to GitHub Pages 🚀
         if: github.event_name == 'push'
         id: deployment
-        uses: actions/deploy-pages@v4  # ✅ Corregido
+        uses: actions/deploy-pages@v4
         with:
           artifact_name: web-build-artifact
