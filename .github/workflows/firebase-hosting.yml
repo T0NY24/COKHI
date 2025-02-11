@@ -39,7 +39,7 @@ jobs:
         pip install -r requirements.txt
         pip install flet-cli==0.25.0
 
-    - name: Setup Flutter  # 🔹 Agregamos instalación de Flutter
+    - name: Setup Flutter  # 🔹 Se requiere Flutter para `flet build web`
       uses: subosito/flutter-action@v2
       with:
         flutter-version: "3.22.2"
@@ -55,9 +55,9 @@ jobs:
       run: |
         echo "GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}, USER: ${GITHUB_REPOSITORY%/*}, PROJECT_BASE_URL: ${GITHUB_REPOSITORY#*/}"
         if [ -f "HubUIDE/app.py" ]; then
-          flet build web HubUIDE/app.py
+          flet build web --module-name HubUIDE.app
         elif [ -f "app.py" ]; then
-          flet build web app.py
+          flet build web --module-name app
         else
           echo "Error: No app.py found in expected locations"
           exit 1
