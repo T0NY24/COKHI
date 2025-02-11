@@ -34,7 +34,7 @@ jobs:
         sudo apt-get install -y ninja-build libgtk-3-dev
         
     - name: Setup Python ${{ env.PYTHON_VERSION }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ env.PYTHON_VERSION }}
 
@@ -61,16 +61,16 @@ jobs:
         echo "GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}, USER: ${GITHUB_REPOSITORY%/*}, PROJECT_BASE_URL: ${GITHUB_REPOSITORY#*/}"
         flutter config --no-analytics
         if [ -f "HubUIDE/app.py" ]; then
-          flet build web --module-name HubUIDE/app.py --base-url ${GITHUB_REPOSITORY#*/} --route-url-strategy hash
+          flet build web --entry-point HubUIDE/app.py --base-url ${GITHUB_REPOSITORY#*/} --route-url-strategy hash
         elif [ -f "app.py" ]; then
-          flet build web --module-name app.py --base-url ${GITHUB_REPOSITORY#*/} --route-url-strategy hash
+          flet build web --entry-point app.py --base-url ${GITHUB_REPOSITORY#*/} --route-url-strategy hash
         else
           echo "Error: No app.py found in expected locations"
           exit 1
         fi
 
     - name: Upload Artifact
-      uses: actions/upload-pages-artifact@v3
+      uses: actions/upload-artifact@v4  # ✅ Corregido
       with:
         name: web-build-artifact
         path: build/web
@@ -92,6 +92,6 @@ jobs:
       - name: Deploy to GitHub Pages 🚀
         if: github.event_name == 'push'
         id: deployment
-        uses: actions/deploy-pages@v4.0.5
+        uses: actions/deploy-pages@v4  # ✅ Corregido
         with:
           artifact_name: web-build-artifact
