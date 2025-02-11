@@ -33,29 +33,19 @@ jobs:
       with:
         python-version: ${{ env.PYTHON_VERSION }}
 
-    - name: Install Python Dependencies
-      run: |
+        - name: Install Python Dependencies
+        run: |
           python -m pip install --upgrade pip
-          pip install wheel setuptools
-          pip install cryptography==42.0.5
+          pip install cryptography==42.0.5  # 🔹 Instalamos la versión compatible de `cryptography`
           
-          # Instalamos las dependencias base sin dependencias opcionales
-          pip install --no-deps google-api-core
-          pip install --no-deps google-cloud-core
-          pip install --no-deps google-auth
-          pip install --no-deps protobuf
-          
-          # Instalamos google-cloud-storage sin dependencias problemáticas
-          pip install google-cloud-storage --no-deps
-          
-          # Instalamos el resto de dependencias
+          # 🔹 Instalamos todas las dependencias sin dependencias opcionales
           pip install -r requirements.txt --no-deps
           
-          # Instalamos Flet y sus dependencias necesarias
+                 
+          # 🔹 Instalamos flet-cli
           pip install flet-cli==0.25.0
-          pip install flet
 
-    - name: Setup Flutter
+    - name: Setup Flutter  # 🔹 Flet necesita Flutter para compilar web
       uses: subosito/flutter-action@v2
       with:
         flutter-version: "3.22.2"
@@ -66,13 +56,10 @@ jobs:
         ls -la
         echo "Full repository structure:"
         find . -type f
-        echo "Python packages installed:"
-        pip list
 
     - name: Flet Build Web
       run: |
         echo "GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}, USER: ${GITHUB_REPOSITORY%/*}, PROJECT_BASE_URL: ${GITHUB_REPOSITORY#*/}"
-        flutter config --no-analytics
         if [ -f "HubUIDE/app.py" ]; then
           flet build web --module-name HubUIDE.app
         elif [ -f "app.py" ]; then
@@ -83,7 +70,7 @@ jobs:
         fi
 
     - name: Upload Artifact
-      uses: actions/upload-pages-artifact@v4
+      uses: actions/upload-artifact@v4
       with:
         name: web-build-artifact
         path: build/web
