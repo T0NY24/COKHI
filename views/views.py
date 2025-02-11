@@ -534,7 +534,7 @@ def main(page: ft.Page):
         )
 
         return container
-
+#########################################   Main Page ###########################################
     def main_view():
         caregivers = caregiver_controller.get_caregivers()
         if not caregivers:
@@ -744,7 +744,7 @@ def main(page: ft.Page):
             ),
             padding=20,
         )
-
+############################################# Perfil Usuario ################################
     def profile_view(user_id):
         user_data = profile_controller.get_user_profile(user_id)
         if not user_data:
