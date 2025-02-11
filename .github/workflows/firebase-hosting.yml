@@ -36,7 +36,7 @@ jobs:
     - name: Install Python Dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install cffi==1.16.0  # 🔹 Instalamos la versión compatible de `cffi`
+        pip install cryptography==42.0.5  # 🔹 Instalamos la versión compatible de `cryptography`
         pip install -r requirements.txt
         pip install flet-cli==0.25.0
 
