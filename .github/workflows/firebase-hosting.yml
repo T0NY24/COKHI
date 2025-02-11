@@ -50,9 +50,9 @@ jobs:
       run: |
         echo "GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}, USER: ${GITHUB_REPOSITORY%/*}, PROJECT_BASE_URL: ${GITHUB_REPOSITORY#*/}"
         if [ -f "HubUIDE/app.py" ]; then
-          flet build web -m HubUIDE.app
+          flet build web HubUIDE/app.py
         elif [ -f "app.py" ]; then
-          flet build web -m app
+          flet build web app.py
         else
           echo "Error: No app.py found in expected locations"
           exit 1
