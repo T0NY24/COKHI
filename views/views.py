@@ -56,8 +56,8 @@ def main(page: ft.Page):
             style=ft.ButtonStyle(
                 shape=ft.RoundedRectangleBorder(radius=8),
                 bgcolor={
-                    ft.MaterialState.DEFAULT: PRIMARY_COLOR,
-                    ft.MaterialState.HOVERED: ACCENT_COLOR,
+                    "default": PRIMARY_COLOR,
+                    "hovered": ACCENT_COLOR,
                 },
             ),
             width=320,
@@ -126,8 +126,8 @@ def main(page: ft.Page):
                 else:
                     error_text.value = "Credenciales incorrectas"
                     error_text.visible = True
-            except Exception as e:
-                error_text.value = f"Error: {str(e)}"
+            except Exception as err:
+                error_text.value = f"Error: {str(err)}"
                 error_text.visible = True
             finally:
                 loading.visible = False
@@ -157,15 +157,13 @@ def main(page: ft.Page):
         forgot_password = ft.Container(
             content=ft.Row(
                 [
-                    ft.Text(
-                        "¿Olvidaste tu contraseña?", size=14, color=SECONDARY_COLOR
-                    ),
+                    ft.Text("¿Olvidaste tu contraseña?", size=14, color=SECONDARY_COLOR),
                     ft.TextButton(
                         "Recuperar",
                         style=ft.ButtonStyle(
                             color={
-                                ft.MaterialState.DEFAULT: ACCENT_COLOR,
-                                ft.MaterialState.HOVERED: PRIMARY_COLOR,
+                                "default": ACCENT_COLOR,
+                                "hovered": PRIMARY_COLOR,
                             }
                         ),
                     ),
@@ -180,8 +178,8 @@ def main(page: ft.Page):
             on_click=lambda _: update_view("signup"),
             style=ft.ButtonStyle(
                 color={
-                    ft.MaterialState.DEFAULT: SECONDARY_COLOR,
-                    ft.MaterialState.HOVERED: PRIMARY_COLOR,
+                    "default": SECONDARY_COLOR,
+                    "hovered": PRIMARY_COLOR,
                 }
             ),
         )
@@ -209,45 +207,24 @@ def main(page: ft.Page):
 
     def signup_view():
         fields = {
-            "email": create_input_field(
-                "Correo Electrónico", ft.icons.EMAIL, hint_text="tu@email.com"
-            ),
-            "password": create_input_field(
-                "Contraseña",
-                ft.icons.LOCK_OUTLINE,
-                password=True,
-                hint_text="Crea una contraseña segura",
-            ),
-            "nombre": create_input_field(
-                "Nombre", ft.icons.PERSON_OUTLINE, hint_text="Ingresa tu nombre"
-            ),
-            "apellido": create_input_field(
-                "Apellido", ft.icons.PERSON_OUTLINE, hint_text="Ingresa tu apellido"
-            ),
-            "telefono": create_input_field(
-                "Teléfono", ft.icons.PHONE, hint_text="Ingresa tu teléfono"
-            ),
-            "ciudad": create_input_field(
-                "Ciudad", ft.icons.LOCATION_ON, hint_text="Ingresa tu ciudad"
-            ),
-            "codigo_postal": create_input_field(
-                "Código Postal", ft.icons.MAP, hint_text="Ingresa tu código postal"
-            ),
+            "email": create_input_field("Correo Electrónico", ft.icons.EMAIL, hint_text="tu@email.com"),
+            "password": create_input_field("Contraseña", ft.icons.LOCK_OUTLINE, password=True, hint_text="Crea una contraseña segura"),
+            "nombre": create_input_field("Nombre", ft.icons.PERSON_OUTLINE, hint_text="Ingresa tu nombre"),
+            "apellido": create_input_field("Apellido", ft.icons.PERSON_OUTLINE, hint_text="Ingresa tu apellido"),
+            "telefono": create_input_field("Teléfono", ft.icons.PHONE, hint_text="Ingresa tu teléfono"),
+            "ciudad": create_input_field("Ciudad", ft.icons.LOCATION_ON, hint_text="Ingresa tu ciudad"),
+            "codigo_postal": create_input_field("Código Postal", ft.icons.MAP, hint_text="Ingresa tu código postal"),
         }
 
         error_text = ft.Text("", color="red", size=14, visible=False)
-        loading = ft.ProgressRing(
-            width=16, height=16, stroke_width=2, color=PRIMARY_COLOR, visible=False
-        )
+        loading = ft.ProgressRing(width=16, height=16, stroke_width=2, color=PRIMARY_COLOR, visible=False)
 
         def handle_signup(e):
             loading.visible = True
             error_text.visible = False
             page.update()
 
-            values = {
-                key: field.content.controls[1].value for key, field in fields.items()
-            }
+            values = {key: field.content.controls[1].value for key, field in fields.items()}
 
             if not all(values.values()):
                 error_text.value = "Por favor completa todos los campos"
@@ -266,14 +243,13 @@ def main(page: ft.Page):
                     "codigoPostal": values["codigo_postal"],
                     "fechaRegistro": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 }
-
                 if auth_controller.signup_user(user_data, values["password"]):
                     update_view("login")
                 else:
                     error_text.value = "Error al registrar usuario"
                     error_text.visible = True
-            except Exception as e:
-                error_text.value = f"Error: {str(e)}"
+            except Exception as err:
+                error_text.value = f"Error: {str(err)}"
                 error_text.visible = True
             finally:
                 loading.visible = False
@@ -299,8 +275,8 @@ def main(page: ft.Page):
             on_click=lambda _: update_view("login"),
             style=ft.ButtonStyle(
                 color={
-                    ft.MaterialState.DEFAULT: SECONDARY_COLOR,
-                    ft.MaterialState.HOVERED: PRIMARY_COLOR,
+                    "default": SECONDARY_COLOR,
+                    "hovered": PRIMARY_COLOR,
                 }
             ),
         )
@@ -310,64 +286,41 @@ def main(page: ft.Page):
             on_click=lambda _: update_view("signup_cuidador"),
             style=ft.ButtonStyle(
                 color={
-                    ft.MaterialState.DEFAULT: SECONDARY_COLOR,
-                    ft.MaterialState.HOVERED: PRIMARY_COLOR,
+                    "default": SECONDARY_COLOR,
+                    "hovered": PRIMARY_COLOR,
                 }
             ),
         )
 
         container = create_card_container(
             ft.Column(
-                [header]
-                + list(fields.values())
-                + [signup_button, loading, error_text, login_link, caregiver_link],
+                [header] + list(fields.values()) + [signup_button, loading, error_text, login_link, caregiver_link],
                 alignment=ft.MainAxisAlignment.CENTER,
                 spacing=10,
             )
         )
 
-        return ft.Container(
-            content=container, alignment=ft.alignment.center, expand=True
-        )
+        return ft.Container(content=container, alignment=ft.alignment.center, expand=True)
 
     def signup_cuidador_view():
         fields = {
-            "email": create_input_field(
-                "Correo Electrónico", ft.icons.EMAIL, hint_text="tu@email.com"
-            ),
-            "password": create_input_field(
-                "Contraseña",
-                ft.icons.LOCK_OUTLINE,
-                password=True,
-                hint_text="Crea una contraseña segura",
-            ),
-            "nombre": create_input_field(
-                "Nombre", ft.icons.PERSON_OUTLINE, hint_text="Ingresa tu nombre"
-            ),
-            "apellido": create_input_field(
-                "Apellido", ft.icons.PERSON_OUTLINE, hint_text="Ingresa tu apellido"
-            ),
-            "cedula": create_input_field(
-                "Cédula", ft.icons.BADGE, hint_text="Ingresa tu cédula"
-            ),
-            "telefono": create_input_field(
-                "Teléfono", ft.icons.PHONE, hint_text="Ingresa tu teléfono"
-            ),
+            "email": create_input_field("Correo Electrónico", ft.icons.EMAIL, hint_text="tu@email.com"),
+            "password": create_input_field("Contraseña", ft.icons.LOCK_OUTLINE, password=True, hint_text="Crea una contraseña segura"),
+            "nombre": create_input_field("Nombre", ft.icons.PERSON_OUTLINE, hint_text="Ingresa tu nombre"),
+            "apellido": create_input_field("Apellido", ft.icons.PERSON_OUTLINE, hint_text="Ingresa tu apellido"),
+            "cedula": create_input_field("Cédula", ft.icons.BADGE, hint_text="Ingresa tu cédula"),
+            "telefono": create_input_field("Teléfono", ft.icons.PHONE, hint_text="Ingresa tu teléfono"),
         }
 
         error_text = ft.Text("", color="red", size=14, visible=False)
-        loading = ft.ProgressRing(
-            width=16, height=16, stroke_width=2, color=PRIMARY_COLOR, visible=False
-        )
+        loading = ft.ProgressRing(width=16, height=16, stroke_width=2, color=PRIMARY_COLOR, visible=False)
 
         def handle_signup(e):
             loading.visible = True
             error_text.visible = False
             page.update()
 
-            values = {
-                key: field.content.controls[1].value for key, field in fields.items()
-            }
+            values = {key: field.content.controls[1].value for key, field in fields.items()}
 
             if not all(values.values()):
                 error_text.value = "Por favor completa todos los campos"
@@ -385,14 +338,13 @@ def main(page: ft.Page):
                     "telefono": values["telefono"],
                     "fechaRegistro": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 }
-
                 if auth_controller.signup_caregiver(cuidador_data, values["password"]):
                     update_view("login")
                 else:
                     error_text.value = "Error al registrar cuidador"
                     error_text.visible = True
-            except Exception as e:
-                error_text.value = f"Error: {str(e)}"
+            except Exception as err:
+                error_text.value = f"Error: {str(err)}"
                 error_text.visible = True
             finally:
                 loading.visible = False
@@ -418,25 +370,21 @@ def main(page: ft.Page):
             on_click=lambda _: update_view("login"),
             style=ft.ButtonStyle(
                 color={
-                    ft.MaterialState.DEFAULT: SECONDARY_COLOR,
-                    ft.MaterialState.HOVERED: PRIMARY_COLOR,
+                    "default": SECONDARY_COLOR,
+                    "hovered": PRIMARY_COLOR,
                 }
             ),
         )
 
         container = create_card_container(
             ft.Column(
-                [header]
-                + list(fields.values())
-                + [signup_button, loading, error_text, login_link],
+                [header] + list(fields.values()) + [signup_button, loading, error_text, login_link],
                 alignment=ft.MainAxisAlignment.CENTER,
                 spacing=10,
             )
         )
 
-        return ft.Container(
-            content=container, alignment=ft.alignment.center, expand=True
-        )
+        return ft.Container(content=container, alignment=ft.alignment.center, expand=True)
 
     def admin_dashboard():
         users = admin_controller.get_all_users()
@@ -447,20 +395,13 @@ def main(page: ft.Page):
                 border=ft.border.all(1, PRIMARY_COLOR),
                 border_radius=10,
                 heading_row_color=ft.colors.with_opacity(0.1, PRIMARY_COLOR),
-                columns=[
-                    ft.DataColumn(ft.Text(col, color=PRIMARY_COLOR)) for col in columns
-                ],
+                columns=[ft.DataColumn(ft.Text(col, color=PRIMARY_COLOR)) for col in columns],
                 rows=[
                     ft.DataRow(
                         cells=[
-                            ft.DataCell(
-                                ft.Text(
-                                    str(row.get(col.lower(), "")), color=SECONDARY_COLOR
-                                )
-                            )
+                            ft.DataCell(ft.Text(str(row.get(col.lower(), "")), color=SECONDARY_COLOR))
                             for col in columns[:-1]
-                        ]
-                        + [
+                        ] + [
                             ft.DataCell(
                                 ft.IconButton(
                                     ft.icons.DELETE_OUTLINE,
@@ -483,15 +424,8 @@ def main(page: ft.Page):
             if admin_controller.delete_caregiver(e.control.data):
                 update_view("admin_dashboard")
 
-        users_table = create_data_table(
-            users, ["Nombre", "Email", "Acciones"], delete_user
-        )
-
-        caregivers_table = create_data_table(
-            caregivers,
-            ["Nombre", "Cédula", "Email", "Teléfono", "Acciones"],
-            delete_caregiver,
-        )
+        users_table = create_data_table(users, ["Nombre", "Email", "Acciones"], delete_user)
+        caregivers_table = create_data_table(caregivers, ["Nombre", "Cédula", "Email", "Teléfono", "Acciones"], delete_caregiver)
 
         header = ft.Text(
             "Panel de Administración",
@@ -505,20 +439,10 @@ def main(page: ft.Page):
             content=ft.Column(
                 [
                     header,
-                    ft.Text(
-                        "Usuarios Registrados",
-                        size=20,
-                        color=SECONDARY_COLOR,
-                        weight=ft.FontWeight.BOLD,
-                    ),
+                    ft.Text("Usuarios Registrados", size=20, color=SECONDARY_COLOR, weight=ft.FontWeight.BOLD),
                     users_table,
                     ft.Divider(height=40, color=PRIMARY_COLOR),
-                    ft.Text(
-                        "Cuidadores Registrados",
-                        size=20,
-                        color=SECONDARY_COLOR,
-                        weight=ft.FontWeight.BOLD,
-                    ),
+                    ft.Text("Cuidadores Registrados", size=20, color=SECONDARY_COLOR, weight=ft.FontWeight.BOLD),
                     caregivers_table,
                 ],
                 spacing=20,
@@ -534,30 +458,23 @@ def main(page: ft.Page):
         )
 
         return container
-#########################################   Main Page ###########################################
+
     def main_view():
         caregivers = caregiver_controller.get_caregivers()
         if not caregivers:
             return ft.Container(
-                content=ft.Text(
-                    "No hay cuidadores disponibles",
-                    size=20,
-                    color="red",
-                    text_align=ft.TextAlign.CENTER,
-                ),
+                content=ft.Text("No hay cuidadores disponibles", size=20, color="red", text_align=ft.TextAlign.CENTER),
                 alignment=ft.alignment.center,
             )
 
-        current_index = [0]  # Using list to make it mutable in nested functions
+        current_index = [0]  # Lista mutable para uso en funciones anidadas
 
         def create_caregiver_card(caregiver):
             return ft.Container(
                 content=ft.Column(
                     [
                         ft.Image(
-                            src=caregiver.get(
-                                "image", "https://via.placeholder.com/300"
-                            ),
+                            src=caregiver.get("image", "https://via.placeholder.com/300"),
                             width=300,
                             height=300,
                             fit=ft.ImageFit.COVER,
@@ -569,21 +486,9 @@ def main(page: ft.Page):
                             weight=ft.FontWeight.BOLD,
                             color=PRIMARY_COLOR,
                         ),
-                        ft.Text(
-                            f"📄 Cédula: {caregiver.get('Cedula', '')}",
-                            size=16,
-                            color=SECONDARY_COLOR,
-                        ),
-                        ft.Text(
-                            f"📧 Email: {caregiver.get('Email', '')}",
-                            size=16,
-                            color=SECONDARY_COLOR,
-                        ),
-                        ft.Text(
-                            f"📞 Teléfono: {caregiver.get('Telefono', '')}",
-                            size=16,
-                            color=SECONDARY_COLOR,
-                        ),
+                        ft.Text(f"📄 Cédula: {caregiver.get('Cedula', '')}", size=16, color=SECONDARY_COLOR),
+                        ft.Text(f"📧 Email: {caregiver.get('Email', '')}", size=16, color=SECONDARY_COLOR),
+                        ft.Text(f"📞 Teléfono: {caregiver.get('Telefono', '')}", size=16, color=SECONDARY_COLOR),
                     ],
                     alignment=ft.MainAxisAlignment.CENTER,
                     spacing=10,
@@ -628,10 +533,7 @@ def main(page: ft.Page):
                         content=ft.Text("❌ Rechazar", color="white"),
                         style=ft.ButtonStyle(
                             shape=ft.RoundedRectangleBorder(radius=8),
-                            bgcolor={
-                                ft.MaterialState.DEFAULT: "red",
-                                ft.MaterialState.HOVERED: "#ff6666",
-                            },
+                            bgcolor={"default": "red", "hovered": "#ff6666"},
                         ),
                         on_click=handle_reject,
                     ),
@@ -639,10 +541,7 @@ def main(page: ft.Page):
                         content=ft.Text("ℹ️ Info", color="white"),
                         style=ft.ButtonStyle(
                             shape=ft.RoundedRectangleBorder(radius=8),
-                            bgcolor={
-                                ft.MaterialState.DEFAULT: SECONDARY_COLOR,
-                                ft.MaterialState.HOVERED: ACCENT_COLOR,
-                            },
+                            bgcolor={"default": SECONDARY_COLOR, "hovered": ACCENT_COLOR},
                         ),
                         on_click=lambda _: show_info_dialog(),
                     ),
@@ -650,10 +549,7 @@ def main(page: ft.Page):
                         content=ft.Text("✅ Aceptar", color="white"),
                         style=ft.ButtonStyle(
                             shape=ft.RoundedRectangleBorder(radius=8),
-                            bgcolor={
-                                ft.MaterialState.DEFAULT: PRIMARY_COLOR,
-                                ft.MaterialState.HOVERED: ACCENT_COLOR,
-                            },
+                            bgcolor={"default": PRIMARY_COLOR, "hovered": ACCENT_COLOR},
                         ),
                         on_click=handle_accept,
                     ),
@@ -663,9 +559,7 @@ def main(page: ft.Page):
             )
 
         caregiver_display = ft.Container()
-        result_text = ft.Text(
-            "", color="green", size=16, text_align=ft.TextAlign.CENTER
-        )
+        result_text = ft.Text("", color="green", size=16, text_align=ft.TextAlign.CENTER)
 
         def update_caregiver_display():
             if current_index[0] >= len(caregivers):
@@ -681,9 +575,7 @@ def main(page: ft.Page):
                 content=ft.Column(
                     [
                         ft.Image(
-                            src=caregiver.get(
-                                "image", "https://via.placeholder.com/300"
-                            ),
+                            src=caregiver.get("image", "https://via.placeholder.com/300"),
                             width=200,
                             height=200,
                             fit=ft.ImageFit.COVER,
@@ -695,26 +587,10 @@ def main(page: ft.Page):
                             weight=ft.FontWeight.BOLD,
                             color=PRIMARY_COLOR,
                         ),
-                        ft.Text(
-                            f"📄 Cédula: {caregiver.get('Cedula', '')}",
-                            size=16,
-                            color=SECONDARY_COLOR,
-                        ),
-                        ft.Text(
-                            f"📧 Email: {caregiver.get('Email', '')}",
-                            size=16,
-                            color=SECONDARY_COLOR,
-                        ),
-                        ft.Text(
-                            f"📞 Teléfono: {caregiver.get('Telefono', '')}",
-                            size=16,
-                            color=SECONDARY_COLOR,
-                        ),
-                        ft.Text(
-                            f"📅 Registrado: {caregiver.get('FechaRegistro', '')}",
-                            size=16,
-                            color=SECONDARY_COLOR,
-                        ),
+                        ft.Text(f"📄 Cédula: {caregiver.get('Cedula', '')}", size=16, color=SECONDARY_COLOR),
+                        ft.Text(f"📧 Email: {caregiver.get('Email', '')}", size=16, color=SECONDARY_COLOR),
+                        ft.Text(f"📞 Teléfono: {caregiver.get('Telefono', '')}", size=16, color=SECONDARY_COLOR),
+                        ft.Text(f"📅 Registrado: {caregiver.get('FechaRegistro', '')}", size=16, color=SECONDARY_COLOR),
                     ],
                     alignment=ft.MainAxisAlignment.CENTER,
                     spacing=10,
@@ -722,10 +598,7 @@ def main(page: ft.Page):
                 actions=[
                     ft.TextButton(
                         "Cerrar",
-                        on_click=lambda e: (
-                            setattr(page.dialog, "open", False),
-                            page.update(),
-                        ),
+                        on_click=lambda e: (setattr(page.dialog, "open", False), page.update()),
                     )
                 ],
             )
@@ -733,7 +606,6 @@ def main(page: ft.Page):
             dialog.open = True
             page.update()
 
-        # Inicializar la vista
         update_caregiver_display()
 
         return ft.Container(
@@ -744,17 +616,12 @@ def main(page: ft.Page):
             ),
             padding=20,
         )
-############################################# Perfil Usuario ################################
+
     def profile_view(user_id):
         user_data = profile_controller.get_user_profile(user_id)
         if not user_data:
             return ft.Container(
-                content=ft.Text(
-                    "Error al cargar el perfil",
-                    size=20,
-                    color="red",
-                    text_align=ft.TextAlign.CENTER,
-                ),
+                content=ft.Text("Error al cargar el perfil", size=20, color="red", text_align=ft.TextAlign.CENTER),
                 alignment=ft.alignment.center,
             )
 
@@ -774,17 +641,13 @@ def main(page: ft.Page):
         success_text = ft.Text("", color="green", size=14, visible=False)
 
         def handle_update_profile(e):
-            values = {
-                key: field.content.controls[1].value for key, field in fields.items()
-            }
-
+            values = {key: field.content.controls[1].value for key, field in fields.items()}
             if not all(values.values()):
                 error_text.value = "Por favor completa todos los campos"
                 error_text.visible = True
                 success_text.visible = False
                 page.update()
                 return
-
             try:
                 if profile_controller.update_user_profile(user_id, values):
                     success_text.value = "✅ Perfil actualizado exitosamente"
@@ -794,8 +657,8 @@ def main(page: ft.Page):
                     error_text.value = "❌ Error al actualizar el perfil"
                     error_text.visible = True
                     success_text.visible = False
-            except Exception as e:
-                error_text.value = f"❌ Error: {str(e)}"
+            except Exception as err:
+                error_text.value = f"❌ Error: {str(err)}"
                 error_text.visible = True
                 success_text.visible = False
             page.update()
@@ -813,11 +676,7 @@ def main(page: ft.Page):
                         border_radius=ft.border_radius.all(75),
                     ),
                     *fields.values(),
-                    ft.Text(
-                        f"📧 Email: {user_data.get('Email', '')}",
-                        size=16,
-                        color=SECONDARY_COLOR,
-                    ),
+                    ft.Text(f"📧 Email: {user_data.get('Email', '')}", size=16, color=SECONDARY_COLOR),
                     update_button,
                     error_text,
                     success_text,
@@ -827,13 +686,10 @@ def main(page: ft.Page):
             )
         )
 
-        return ft.Container(
-            content=container, alignment=ft.alignment.center, expand=True
-        )
+        return ft.Container(content=container, alignment=ft.alignment.center, expand=True)
 
     def update_view(view_name):
         content.controls.clear()
-
         if view_name == "login":
             content.controls.append(login_view())
         elif view_name == "admin_dashboard":
@@ -847,18 +703,10 @@ def main(page: ft.Page):
         elif view_name == "profile":
             content.controls.append(profile_view("tcp4dtDtjYV8hCCACDNfunjmdYt1"))
         else:
-            content.controls.append(
-                ft.Text(
-                    "Página no encontrada",
-                    size=20,
-                    color="red",
-                    text_align=ft.TextAlign.CENTER,
-                )
-            )
-
+            content.controls.append(ft.Text("Página no encontrada", size=20, color="red", text_align=ft.TextAlign.CENTER))
         page.update()
 
-    # Configuración inicial
+    # Agregar contenedor principal a la página y cargar vista inicial
     page.add(content)
     update_view("login")
 
