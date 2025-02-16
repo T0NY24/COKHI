@@ -28,8 +28,7 @@ jobs:
       - name: Flet Build Web
         run: |
           echo "GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}, USER: ${GITHUB_REPOSITORY%/*}, PROJECT_BASE_URL: ${GITHUB_REPOSITORY#*/}"
-          flutter config --no-analytics
-          if [ -f "C:/Users/anper/Downloads/HubUIDE/HubUIDE/app.py" ]; then
+          if [ -f "HubUIDE/app.py" ]; then
             flet build web --module-name HubUIDE.app
           elif [ -f "app.py" ]; then
             flet build web --module-name app
